@@ -1,0 +1,77 @@
+project_name,project_url,topics,description
+gcam-core,https://github.com/JGCRI/gcam-core.git,"['energy', 'land', 'integrated-assessment', 'economics', 'gcam', 'water', 'climate', 'coupled-human-natural-systems', 'human-earth-system']",GCAM -- The Global Change Analysis Model
+SAM,https://github.com/NREL/SAM.git,[],System Advisor Model (SAM)
+openTEPES,https://github.com/IIT-EnergySystemModels/openTEPES.git,[],Open Generation and Transmission Operation and Expansion Planning Model with RES and ESS (openTEPES)
+PowerGenome,https://github.com/PowerGenome/PowerGenome.git,[],A tool to quickly and easily create inputs for power systems models
+load_forecasting,https://github.com/pyaf/load_forecasting.git,"['machine-learning', 'rnn', 'lstm', 'gru', 'arima', 'wma', 'ses', 'sma', 'electric-load-forecasting', 'time-series-forecasting']","Forecasting electric power load of Delhi using ARIMA, RNN, LSTM, and GRU models"
+REopt_Lite_API,https://github.com/NREL/REopt_Lite_API.git,"['nrel', 'renewable-energy', 'optimization', 'reopt-lite-api']","The model for the REopt Lite API, which is used as the back-end for the REopt Lite Webtool (reopt.nrel.gov/tool), and can be accessed directly via the NREL Developer Network (https://developer.nrel.gov/docs/energy-optimization/reopt-v1/)"
+urbs,https://github.com/tum-ens/urbs.git,"['python', 'pyomo', 'pandas', 'optimisation-model', 'mathematical-modelling', 'linear-programming', 'energy-system']",A linear optimisation model for distributed energy systems
+Dispa-SET,https://github.com/energy-modelling-toolkit/Dispa-SET.git,"['python', 'dispatch', 'power']","The Dispa-SET unit-commitment and optimal dispatch model, developed at the JRC"
+calliope,https://github.com/calliope-project/calliope.git,"['python', 'pyomo', 'energy', 'optimisation', 'energy-system']",A multi-scale energy systems modelling framework
+euro-calliope,https://github.com/calliope-project/euro-calliope.git,"['calliope-models', 'conda', 'europe', 'research', 'energy', 'renewable-energy']",A workflow to build models of the European electricity system for Calliope.
+OSeMOSYS,https://github.com/OSeMOSYS/OSeMOSYS.git,"['energy-model', 'energy', 'osemosys', 'energy-planners', 'investment', 'students']",OSeMOSYS - the Open Source Energy Modelling System
+REVUB,https://github.com/VUB-HYDR/REVUB.git,"['standalone-software', 'renewable', 'electricity', 'solar', 'wind', 'hydro', 'balancing', 'flexibility']","Renewable Electricity Variability, Upscaling and Balancing"
+FINE,https://github.com/FZJ-IEK3-VSA/FINE.git,[],"The FINE python package provides a framework for modeling, optimizing and assessing energy systems"
+compas-architecture,https://github.com/com-pas/compas-architecture.git,[],Project's architecture documentation
+PowerSimulations.jl,https://github.com/NREL-SIIP/PowerSimulations.jl.git,"['julia', 'powersystems', 'optimization', 'energy', 'electricity', 'analysis', 'simulations']",Julia for optimization simulation and modeling of PowerSystems. Part of the Scalable Integrated Infrastructure Planning Initiative at the National Renewable Energy Lab.
+PowerSystems.jl,https://github.com/NREL-SIIP/PowerSystems.jl.git,"['julia', 'powersystems', 'energy-system', 'electrical', 'siip', 'nrel']",Data structures in Julia to enable power systems analysis. Part of the Scalable Integrated Infrastructure Planning Initiative at the National Renewable Energy Lab.
+Balmorel,https://github.com/balmorelcommunity/Balmorel.git,"['energy-system-model', 'gams', 'optimisation-model']",Balmorel Model
+ontology,https://github.com/OpenEnergyPlatform/ontology.git,"['ontology', 'energy', 'open-energy-family']",Repository for the Open Energy Ontology (OEO)
+nempy,https://github.com/UNSW-CEEM/nempy.git,[],A flexible tool kit for modelling Australia's National Electricity Market dispatch procedure.
+NEMO,https://github.com/bje-/NEMO.git,[],National Electricity Market Optimiser
+GlobalEnergyGIS,https://github.com/niclasmattsson/GlobalEnergyGIS.git,[],Generates input data for energy models on renewable energy in arbitrary world regions using public datasets. Written in Julia 1.x.
+IDEAS,https://github.com/open-ideas/IDEAS.git,[],Modelica library allowing simultaneous transient simulation of thermal and electrical systems at both building and feeder level.
+Antares_Simulator,https://github.com/AntaresSimulatorTeam/Antares_Simulator.git,"['adequacy', 'simulation', 'power-systems']","Antares-Simulator is an Open Source power system simulator to quantify the adequacy or the economic performance of interconnected energy systems, at short or remote time horizons."
+HELICS,https://github.com/GMLC-TDC/HELICS.git,"['simulation', 'co-simulation', 'power-grids', 'simulation-framework']",Hierarchical Engine for Large-scale Infrastructure Co-Simulation (HELICS) 
+oemof-solph,https://github.com/oemof/oemof-solph.git,"['energy', 'energy-system', 'modelling', 'modelling-framework']",A model generator for energy system modelling and optimisation (LP/MILP).
+oemof-thermal,https://github.com/oemof/oemof-thermal.git,[],Thermal energy components for the Open Energy Modeling Framework (oemof).
+nomenclature,https://github.com/openENTRANCE/nomenclature.git,[],"Definitions of common terms (variables, regions, etc.) for the openENTRANCE project"
+Joulia.jl,https://github.com/JuliaEnergy/Joulia.jl.git,[],Joulia.jl: A Large-Scale Spatial Power System Model for Julia
+idaes-pse,https://github.com/IDAES/idaes-pse.git,"['process-systems-engineering', 'process-modeling', 'chemical-engineering']",The IDAES Process Systems Engineering Framework
+temoa,https://github.com/TemoaProject/temoa.git,[],Tools for Energy Model Optimization and Analysis
+PowerSystemDataModel,https://github.com/ie3-institute/PowerSystemDataModel.git,"['simulation', 'datamodel', 'powersystem']","Provides an elaborated data model to model energy systems with a high granularity e.g. for bottom-up simulations. Additionally, useful functionalities to handle the model i/o are provided as well."
+pypsa-eur-sec,https://github.com/PyPSA/pypsa-eur-sec.git,"['pypsa', 'energy', 'energy-system', 'energy-model', 'energy-system-model']",PyPSA-Eur-Sec: A Sector-Coupled Open Optimisation Model of the European Energy System
+antaresViz,https://github.com/rte-antares-rpackage/antaresViz.git,"['r', 'monte-carlo-simulation', 'simulation', 'optimization', 'linear-programming', 'stochastic-simulation-algorithm', 'energy', 'electric', 'renewable-energy', 'adequacy', 'shiny', 'shiny-apps', 'manipulatewidge', 'dygraphs', 'plotly', 'leaflet', 'rte', 'bilan', 'previsionnel', 'tyndp']",ANTARES Visualizations
+antaresRead,https://github.com/rte-antares-rpackage/antaresRead.git,"['r', 'monte-carlo-simulation', 'optimisation', 'simulation', 'linear-algebra', 'energy', 'electricity', 'adequacy', 'rhdf5', 'hdf5', 'rte', 'tyndp', 'bilan', 'previsionnel']","Import, manipulate and explore the results of an Antares simulation"
+Spine-Toolbox,https://github.com/Spine-project/Spine-Toolbox.git,"['spine-toolbox', 'python', 'energy', 'anaconda', 'miniconda', 'simulation-model', 'workflow', 'data']","Spine Toolbox is an open source Python package to manage data, scenarios and workflows for modelling and simulation. You can have your local workflow, but work as a team through version control and SQL databases."
+demandlib,https://github.com/oemof/demandlib.git,[],Creating heat and power demand profiles from annual values.
+deflex,https://github.com/reegis/deflex.git,[],Simple heat and power model of Germany
+energy-py-linear,https://github.com/ADGEfficiency/energy-py-linear.git,[],Optimizing energy systems using mixed integer linear programming
+energy-py-linear,https://github.com/ADGEfficiency/energy-py-linear.git,[],Optimizing energy systems using mixed integer linear programming
+AnyMOD.jl,https://github.com/leonardgoeke/AnyMOD.jl.git,"['capacity-expansion-planning', 'energy', 'julia', 'linear-programming', 'optimization']",Julia framework for energy system models with a focus on multi-period capacity expansion
+FlexiGIS,https://github.com/FlexiGIS/FlexiGIS.git,[],FlexiGIS: Open source GIS-based platform for the optimisation of flexibility options in urban areas
+reVX,https://github.com/NREL/reVX.git,[],The Renewable Energy Potential(V) eXchange Tool: reVX
+CapacityExpansion.jl,https://github.com/YoungFaithful/CapacityExpansion.jl.git,"['capacity-expansion-planning', 'energy', 'energy-optimization-model', 'julia', 'jump', 'clustering', 'california', 'germany']",Capacity Expansion Problem Formulation for Julia
+dpsim,https://github.com/sogno-platform/dpsim.git,"['simulation', 'real-time', 'dynamic-phasors', 'powerflow', 'electromagnetic-transient', 'power-systems', 'emt', 'quasi-stationary']","Real-time power system simulator including powerflow, (dynamic) phasors and EMT"
+pypsa-africa,https://github.com/pypsa-meets-africa/pypsa-africa.git,"['pypsa-africa', 'pypsa-meets-africa']",PyPSA meets Africa: An Open Source Optimisation Model of the African Energy System. Our website: https://pypsa-meets-africa.github.io/
+GenX,https://github.com/GenXProject/GenX.git,[],GenX: a configurable power system capacity expansion model for studying low-carbon energy futures. More details at : https://genx.mit.edu
+oeplatform,https://github.com/OpenEnergyPlatform/oeplatform.git,"['oep', 'django', 'rest-api', 'energy', 'database', 'open-energy-family', 'open-data']",Repository for the code of the Open Energy Platform (OEP) website. The OEP provides an interface to the Open Energy Family
+PyPSA,https://github.com/PyPSA/PyPSA.git,"['python', 'loadflow', 'optimisation', 'pyomo', 'energy-system', 'power-systems-analysis', 'optimal-power-flow', 'powerflow', 'energy', 'energy-systems', 'pypsa', 'power-flow', 'power-systems']",PyPSA: Python for Power System Analysis
+oemof,https://github.com/oemof/oemof.git,[],Open Energy Modelling Framework - Python toolbox for energy system modelling and optimisation
+pyGRETA,https://github.com/tum-ens/pyGRETA.git,"['renewable-energy', 'renewable-timeseries', 'potentials', 'wind', 'pv', 'csp', 'gis', 'high-resolution']",python Generator of REnewable Time series and mAps
+RESKit,https://github.com/FZJ-IEK3-VSA/RESKit.git,[],A toolkit to help generate renewable energy generation time-series for energy systems analysis
+powsybl-core,https://github.com/powsybl/powsybl-core.git,"['powsybl', 'power-systems', 'power-system-simulation', 'energy-system', 'modular', 'extensible', 'cim', 'java', 'groovy']",A framework to build power system oriented software
+powsybl-open-loadflow,https://github.com/powsybl/powsybl-open-loadflow.git,"['powsybl', 'klu', 'power-systems', 'power-system-simulation', 'energy-system', 'java', 'load-flow', 'power-flow', 'loadflow', 'powerflow']",An open source loadflow based on PowSyBl
+matpower,https://github.com/MATPOWER/matpower.git,"['matpower', 'matpower-github']",MATPOWER – steady state power flow simulation and optimization for MATLAB and Octave
+energyRt,https://github.com/energyRt/energyRt.git,"['energy-models', 'gams', 'glpk', 'pyomo', 'julia']",Making Energy Systems Modeling as simple as a linear regression in R
+multi-vector-simulator,https://github.com/rl-institut/multi-vector-simulator.git,[],Multi-vector Simulation Tool assessing and optimizing Local Energy Systems (LES) for the E-LAND project
+PowNet,https://github.com/kamal0013/PowNet.git,"['power-system-analysis', 'unit-commitment', 'economic-dispatch', 'transmission', 'dc-flow', 'n-1-criterion', 'water-energy-nexus', 'python', 'dispatchable-units', 'renewable-resources', 'electricity-supply', 'substations']",PowNet: Network-constrained Unit Commitment / Economic Dispatch model in Python with data for Cambodian power system
+OpenIPSL,https://github.com/OpenIPSL/OpenIPSL.git,[],"A library of power system component models written in the Modelica language that can be used for power system dynamic analysis, such as phasor time-domain simulations."
+pyam,https://github.com/IAMconsortium/pyam.git,"['integrated-assessment', 'scenario', 'analysis', 'iamc-format', 'visualization', 'macro-energy', 'energy-systems', 'modeling', 'timeseries-format', 'integrated-assessment-scenarios', 'scenario-data', 'pyam']",an open-source Python package for IAM scenario analysis and visualization
+RAMP,https://github.com/RAMP-project/RAMP.git,[],Repository of the open-source RAMP model for generating multi-energy loads profiles
+pomato,https://github.com/richard-weinhold/pomato.git,[],Power Market Tool for the comprehensive analyses of modern electricity markets (Python+Julia)
+USelectricity,https://github.com/RamiKrispin/USelectricity.git,[],Forecast the US demand for electricity 
+reV,https://github.com/NREL/reV.git,[],Renewable Energy Potential (reV) Model
+openCEM,https://github.com/openCEMorg/openCEM.git,[],Capacity Expansion Model and Optimiser for the Australian National Energy Market
+energy-py,https://github.com/ADGEfficiency/energy-py.git,"['reinforcement-learning', 'energy']",Reinforcement learning for energy systems
+glaes,https://github.com/FZJ-IEK3-VSA/glaes.git,"['geospatial', 'geospatial-analysis', 'renewable-energy', 'energy', 'python']",Geospatial Land Availability for Energy Systems
+onsset,https://github.com/OnSSET/onsset.git,[],The code of the Open Source Spatial Electrification Tool (OnSSET)
+whobs-server,https://github.com/PyPSA/whobs-server.git,[],Online optimisation tool for wind+solar+storage systems
+CityLearn,https://github.com/intelligent-environments-lab/CityLearn.git,[],Official reinforcement learning environment for demand response and load shaping
+rl-testbed-for-energyplus,https://github.com/IBM/rl-testbed-for-energyplus.git,[],Reinforcement Learning Testbed for Power Consumption Optimization using EnergyPlus
+tsam,https://github.com/FZJ-IEK3-VSA/tsam.git,"['clustering', 'timeseries', 'energy-system', 'typical-periods', 'optimization', 'aggregation']",A python-based time series aggregation module (tsam) which can be used to reduce the number of time steps using typical periods or by decreasing the temporal resolution
+TimeSeriesClustering.jl,https://github.com/holgerteichgraeber/TimeSeriesClustering.jl.git,"['clustering', 'optimization', 'energy-systems', 'k-means-clustering', 'k-medoids-clustering', 'hierarchical-clustering', 'representative-days', 'time-series-aggregation', 'julia']","Julia implementation of unsupervised learning methods for time series datasets. It provides functionality for clustering and aggregating, detecting motifs, and quantifying similarity between time series datasets."
+message_ix,https://github.com/iiasa/message_ix.git,"['energy-system', 'strategic-planning', 'integrated-assessment', 'integrated-assessment-model', 'gams', 'open-source']",The integrated assessment and energy systems model MESSAGEix
+gridpath,https://github.com/blue-marble/gridpath.git,"['energy', 'electricity', 'power', 'renewables', 'renewable-energy', 'planning', 'power-systems', 'power-system-simulation', 'power-system-analysis', 'optimization']",A versatile simulation and optimization platform for power-system planning and operations.
+peaky-finders,https://github.com/kbaranko/peaky-finders.git,[],ISO peak load forecasting application 
+renewcast,https://github.com/derevirn/renewcast.git,"['time-series', 'renewable-energy', 'machine-learning', 'streamlit', 'time-series-forecasting']","Renewcast: forecasting renewable energy generation in EU countries with machine learning algorithms, based on Streamlit and sktime."
