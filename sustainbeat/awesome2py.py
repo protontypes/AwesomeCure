@@ -29,9 +29,9 @@ class AwesomeListEntry(object):
         me, children = entry
 
         self.depth = depth
-        htmldata = me.find("a", href=True).extract()
-        self.url = htmldata["href"].strip()
-        self.name = htmldata.get_text().strip()
+        self.htmldata = me.find("a", href=True).extract()
+        self.url = self.htmldata["href"].strip()
+        self.name = self.htmldata.get_text().strip()
         self.text = me.get_text().strip()
 
         self.children = []
@@ -39,13 +39,13 @@ class AwesomeListEntry(object):
             self.children.append(AwesomeListEntry(subentry, depth=self.depth+1))
 
     def __str__(self):
-        s = " " * self.depth*2 + " - %s %s [%s]\n" % (self.name, self.text, self.url)
+        s = " " * self.depth*2 + " - %s %s [%s]" % (self.name, self.text, self.url)
         for child in self.children:
             s += str(child)
         return s
     def __repr__(self):
         return str(self)
-
+       
 class AwesomeList(object):
     def __init__(self, path):
         super().__init__()
@@ -53,38 +53,64 @@ class AwesomeList(object):
         soup = self.convertFromHtml(path)
         contents, d = self.generateDict(soup)
         self.createStructure(contents, d)
-
     def convertFromHtml(self, path):
         html = markdown(open(path).read())
         soup = BeautifulSoup(html, features='html.parser')
         #print(soup.prettify())
         return soup
+    def findOutIfSubListsAreUsed(self, soup):
+        toc = soup.find("h3")
+        return toc != None
+
+    def findContents(self, soup):
+        d = {}
+        ### find content h2
+        while True:
+            toc = soup.find("h2")
+            if toc and toc.get_text() == "Contents":
+                toc.extract() ## extract will consume the item
+                aList = self.findList(soup)
+                if aList:
+                    for item in self.findListItems(aList):
+                        ali = AwesomeListEntry(item)
+                        d[ali.name] = ali.htmldata
+                break
+        ### remove "Contents" from contents dict
+        if "Contens" in d:
+            del d["Contents"]
+        return d
 
     def generateDict(self, soup):
+        ### we ll specifically fetch the contents entry        
+        contents = self.findContents(soup)
+        ### find out if sub list entries were used here [pre consume] ... (experimental)
+        subListsAreUsed = self.findOutIfSubListsAreUsed(soup)
         ### crawl though all categories and extract information
-        d = self.findLists(soup)
         ### ...
-        ### well specifically fetch the contents entry
-        contentKey = "Contents"
-        contents = d[contentKey]
-        if contentKey in d:
-            del d[contentKey]
+        ### if sublists are used, we have now parsed the h2 main list entries
+        ### as well as the h3 sub list entries ... which results in every entry being 
+        d = self.findLists(soup, subListsAreUsed)
         return contents, d
 
     def createStructure(self, contents, d):
-        children = self.findListItems(contents, ignoreSubLists=True)
-        for c in children:
-            rubricKey = c.get_text()
+        #children = self.findListItems(contents, ignoreSubLists=True) 
+        for c,v in contents.items():
+            rubricKey = c
             rubricEntries = d.get(rubricKey, None)
             if rubricEntries:
                 entries = self.findListItems(rubricEntries)
                 self.rubrics.append(AwesomeListRubric(rubricKey, entries))
 
     ########################################################
-    def findLists(self, soup):
+    def findLists(self, soup, subListsAreUsed = False):
         d = {}
         while True:
-            toc = soup.find("h2")
+            ### if there is no major content list defind anymore, we try parsing sub lists
+            if subListsAreUsed:
+                toc = soup.find("h3")
+            else:
+                toc = soup.find("h2")
+            ### start analyzing whatever list was found
             if toc:
                 toc.extract() ## extract will consume the item
                 aList = self.findList(soup)
@@ -100,7 +126,7 @@ class AwesomeList(object):
         return ul
 
     def findListItems(self, parent,  ignoreSubLists=False, depth=0):
-        children = parent.findChildren("li", recursive=True)
+        children = parent.findChildren("li", recursive=False)
         if ignoreSubLists == False:
             tree = []
             tree.extend([(child, []) for child in children])
@@ -117,7 +143,7 @@ class AwesomeList(object):
             ### overwrite the normal children list with the special tupled treelist containing subs and stuff
             children = tree
         return children
-
+    
     def __str__(self):
         s = ""
         for e in self.rubrics:
@@ -127,23 +153,26 @@ class AwesomeList(object):
         return str(self)
 
 
-
 def main():
     path = "samples/awesomeListSample.md"
     if(len(sys.argv) > 1):
         path = sys.argv[1]
 
     alc = AwesomeList(path)
-    print("===============================================")
-
-    print(alc)
-    #for r in alc.rubrics:
-    #    for e in r.entries:
-    #        ### e.name
-    #        ### e.url
-    #        ### e.text
-    #        print(e)
-
+    #print("===============================================")
+    #print(alc)
+    total = 0
+    for r in alc.rubrics:
+        # print("%s [%s]" % (r.key, len(r.entries)))
+        total += len(r.entries)
+        for e in r.entries:
+           ### e.name
+           ### e.url
+           ### e.text
+           print(e)
+           pass
+    #print("===============================================")
+    #print("Done parsing '%s' entries." % total)
 
 if __name__ == "__main__":
     main()
