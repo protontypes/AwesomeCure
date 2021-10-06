@@ -1,5 +1,5 @@
-.env
-
+.*
+!.gitignore
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
