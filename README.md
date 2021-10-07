@@ -1,2 +1,2 @@
 # Sustainbeat
-Collect data of open source ecosystems described in a awesome lists
+Collect data from projects listed in awesome lists
