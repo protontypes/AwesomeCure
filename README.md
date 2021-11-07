@@ -1,2 +1,2 @@
-# Sustainbeat
-Collect data from projects listed in awesome lists
+# Open Curate
+Analyze and cure awesome lists by mining data from listed Git projects.
