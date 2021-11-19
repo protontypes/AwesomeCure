@@ -1,0 +1,41 @@
+project_name,oneliner,git_namespace,git_url,rubric
+QBlade,Provides a hands-on design and simulation capabilities for HAWT and VAWT rotor design and shows all the fundamental relationships of design concepts and turbine performance in an easy and intuitive way.,,http://www.q-blade.org/#welcome,Wind Turbines
+PyWake,An AEP calculator for wind farms implemented in Python including a collection of wake models.,TOPFARM,https://gitlab.windenergy.dtu.dk/TOPFARM/PyWake,Wind Turbines
+TopFarm2,A Python package developed by DTU Wind Energy to help with wind-farm optimizations.,TOPFARM,https://gitlab.windenergy.dtu.dk/TOPFARM/TopFarm2,Wind Turbines
+BasicDTUController,"The scope of this project is to provide an open source, open access controller that can be used by the wind energy community as a reference.",OpenLAC,https://gitlab.windenergy.dtu.dk/OpenLAC/BasicDTUController,Wind Turbines
+WindEnergyToolbox,"A collection of Python scripts that facilitate working with (potentially a lot) of HAWC2,HAWCStab2, FAST or other text input based simulation tools.",toolbox,https://gitlab.windenergy.dtu.dk/toolbox/WindEnergyToolbox,Wind Turbines
+pyconturb,Constrained Stochastic Turbulence for Wind Energy Applications.,pyconturb,https://gitlab.windenergy.dtu.dk/pyconturb/pyconturb,Wind Turbines
+OpenGeoSys 6,A scientific open source project for the development of numerical methods for the simulation of thermo-hydro-mechanical-chemical processes in porous and fractured media.,ogs,https://gitlab.opengeosys.org/ogs/ogs,Geothermal Energy
+simses,Software for techno-economic Simulation of Stationary Energy Storage Systems.,open-ees-ses,https://gitlab.lrz.de/open-ees-ses/simses,Battery
+CAEBAT OAS,"A flexible, robust, and computationally scalable open-architecture framework that integrates multi-physics and multi- scale battery models.",,https://vibe.ornl.gov/#introduction,Battery
+open_BEA,Open Battery Models for Electrical Grid Applications.,open-ees-ses,https://gitlab.lrz.de/open-ees-ses/openbea,Battery
+lp_opt,Linear Programming Optimization Tool for Battery Energy Storage Systems.,open-ees-ses,https://gitlab.lrz.de/open-ees-ses/lp_opt,Battery
+ISEAFramework,Allows coupled electrical-thermal simulations of single storage systems (e.g. lithium ion batteries or double layer capacitors) or complete storage system packs.,isea,https://git.rwth-aachen.de/isea/framework,Battery
+SciGRID_gas,Methods to create an automated network model of the European gas transportation network.,,https://www.gas.scigrid.de/,Hydrogen
+UTD19,Largest multi-city traffic dataset publicly available.,,https://utd19.ethz.ch/,Mobility and Transportation
+OpenMobility,Driving the Evolution and Broad Adoption of Open Source Mobility Modeling and Simulation Technologies.,,https://openmobility.eclipse.org/,Mobility and Transportation
+openv2g,"The objective to start this project is primarily to support the ISO and IEC standardization process to specify the so called ""Vehicle 2 Grid Communication Interface"" (V2G CI) which became the ISO IEC 15118 specification by now.",,http://openv2g.sourceforge.net/,Mobility and Transportation
+FEEP, Improve the energy efficiency of free and open source software.,cschumac,https://invent.kde.org/cschumac/feep,Computation and Services
+Open Energy System Models,Used to explore future energy systems and are often applied to questions involving energy and climate policy.,wiki,https://en.wikipedia.org/wiki/Open_energy_system_models,Energy Modeling and Optimization
+Open Models,This page lists energy models published under open source licenses.,wiki,https://wiki.openmod-initiative.org/wiki/Open_Models,Energy Modeling and Optimization
+pandapower,"An easy to use open source tool for power system modeling, analysis and optimization with a high degree of automation.",,http://www.pandapower.org/,Energy Modeling and Optimization
+DistAIX,A simulator for cyber-physical power systems that makes use of high performance computing techniques to scale up the simulation.,acs/public/simulation/DistAIXFramework,https://git.rwth-aachen.de/acs/public/simulation/DistAIXFramework/distaix,Energy Modeling and Optimization
+dpsim,A real-time power system simulator that operates in the dynamic phasor as well as electromagnetic transient domain.,acs/public/simulation/dpsim,https://git.rwth-aachen.de/acs/public/simulation/dpsim/dpsim,Energy Modeling and Optimization
+VILLASnode,Connecting real-time power grid simulation equipment.,acs/public/villas,https://git.rwth-aachen.de/acs/public/villas/node,Energy Modeling and Optimization
+OMEGAlpes,"Aims to be an energy systems modeling tool for linear optimization (LP, MILP).",omegalpes,https://gricad-gitlab.univ-grenoble-alpes.fr/omegalpes/omegalpes,Energy Modeling and Optimization
+EMMA,"A techno-economic model of the north-west European power market covering France, Benelux, Germany and Poland.",,https://neon.energy/emma/,Energy Modeling and Optimization
+PowerGAMA,A lightweight simulation tool for high level analyses of renewable energy integration in large power systems.,harald_g_svendsen/powergama/wiki,https://bitbucket.org/harald_g_svendsen/powergama/wiki/Home,Energy Modeling and Optimization
+Power System Analysis Toolbox,A Matlab toolbox for electric power system analysis and simulation.,,http://faraday1.ucd.ie/psat.html,Energy Modeling and Optimization
+OpenDSS,An electric power Distribution System Simulator for supporting distributed resource integration and grid modernization efforts.,projects,https://sourceforge.net/projects/electricdss/,Energy Distribution and Grids
+openleadr,Open Automated Demand Response (OpenADR) is an open and interoperable information exchange model and emerging smart grid standard.,projects,https://www.lfenergy.org/projects/openleadr/,Energy Distribution and Grids
+Backbone,A generic energy network optimization tool written in GAMS.,backbone,https://gitlab.vtt.fi/backbone/backbone,Energy Distribution and Grids
+SciGRID,"The focus will be on the European transmission grids, but the methods will be applicable more generally.",,https://power.scigrid.de/,Energy Distribution and Grids
+SEAPATH,Industrial grade open source real-time platform that can run virtualized automation and protection applications for the power grid industry.,projects,https://www.lfenergy.org/projects/seapath/,Energy Distribution and Grids
+Open Power System Data,A list of primary data sources that are helpful for power system modeling of Europe.,,https://open-power-system-data.org/data-sources,Datasets on Energy Systems
+Photovoltaic time series for European countries,"Comprises 38 years-long hourly time series representing the photovoltaic capacity factors in every European country (EU-28 plus Serbia, Bosnia-Herzegovina, Norway, and Switzerland).",record,https://zenodo.org/record/2613651#.XRtJRP7Rapo,Datasets on Energy Systems
+OpenEI,A knowledge-sharing online community dedicated to connecting people with the latest information and data on energy resources from around the world.,wiki,https://openei.org/wiki/Main_Page,Datasets on Energy Systems
+Power grid frequency data base,This data set contains precisely time stamped (GPS referenced) frequency data from several power grids around the world in one second resolution and 1 hour excerpts of raw data.,,https://osf.io/by5hu/,Datasets on Energy Systems
+The FfE Open Data Portal,Offers an overview of free datasets for modelling energy demand and generation.,,http://opendata.ffe.de/,Datasets on Energy Systems
+DKA Solar Centre,"Online hub for sharing solar-related knowledge and data from the Northern Territory, Australia.",,http://dkasolarcentre.com.au/,Datasets on Energy Systems
+CAMx,A multi-scale photochemical modeling system for gas and particulate air pollution.,,https://www.camx.com/,Carbon Intensity
+DuMux,"Based on the DUNE framework and aims to provide a multitude of numerical models as well as flexible discretization methods for complex non-linear phenomena, such as CO2 sequestration, soil remediation, drug delivery in cancer therapy and more.",dumux-repositories,https://git.iws.uni-stuttgart.de/dumux-repositories/dumux,Emission Observation and Modeling
