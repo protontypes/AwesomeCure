@@ -1,0 +1,23 @@
+project_name,oneliner,git_namespace,git_url,rubric
+emobpy,An open tool for creating battery-electric vehicle time series from empirical data.,diw-evu/emobpy,https://gitlab.com/diw-evu/emobpy/emobpy,Battery
+Energy Signature Analyser,A toolbox to analyze energy signatures of buildings and compare the signatures of all buildings within an entire building stock.,energyincities,https://gitlab.com/energyincities/energy-signature-analyser,Buildings and Cities
+BESOS,A collection of modules for the simulation and optimization of buildings and urban energy systems.,energyincities,https://gitlab.com/energyincities/besos,Buildings and Cities
+sustainable-mobility-api,Consists of a Python library and HTTP API for estimating the environmental impact of personal mobility.,mshepherd,https://gitlab.com/mshepherd/sustainable-mobility-api,Mobility and Transportation
+H2020 CATALYST,Converting data centres in energy flexibility ecosystems.,,https://gitlab.com/project-catalyst,Computation and Services
+ecometer,"Loads websites, compute metrics (from network activity, loaded payloads and the web page), and uses them to assess the website's ecodesign maturity based on a list of best practices.",ecoconceptionweb,https://gitlab.com/ecoconceptionweb/ecometer,Computation and Services
+Carbon-API-2.0,Estimating the carbon emissions per page on thousands of sites by looking at the amount of data that they transfer on load.,wholegrain,https://gitlab.com/wholegrain/carbon-api-2-0,Computation and Services
+dieter_py,An open source power sector optimization model that has been developed to investigate the role of electricity storage and sector coupling options in future scenarios with high shares of renewable energy sources.,diw-evu/dieter_public,https://gitlab.com/diw-evu/dieter_public/dieterpy,Energy Modeling and Optimization
+pyehub,"A Python-based, modular and nestable implementation of the Energy Hub model (balancing demand and supply, system capacity sizing and network flows using Mixed-Integer Linear Programming).",energyincities,https://gitlab.com/energyincities/python-ehub,Energy Distribution and Grids
+mosaik,A flexible Smart Grid co-simulation framework.,mosaik,https://gitlab.com/mosaik/mosaik,Energy Distribution and Grids
+SmartGridToolbox,Designed to provide an extensible and flexible starting point for developing a wide variety of smart grid simulations and other applications.,SmartGridToolbox,https://gitlab.com/SmartGridToolbox/SmartGridToolbox,Energy Distribution and Grids
+CarbonFootprint,A browser extension that displays carbon footprint information in multiple map services.,aossie,https://gitlab.com/aossie/CarbonFootprint,Carbon Intensity
+OpenIAM,"An open source integrated assessment model developed by National Risk Assessment Partnership Phase II to facilitate risk assessment, management and containment assurance for geologic carbon sequestration projects.",NRAP,https://gitlab.com/NRAP/OpenIAM,Carbon Capture and Removel
+vein,An R package to estimate Vehicular Emissions INventories.,ibarraespinosa,https://gitlab.com/ibarraespinosa/vein,Emission Observation and Modeling
+OpenSimRoot,"Source code for simulating root architecture, nutrient and water uptake and more.",rootmodels,https://gitlab.com/rootmodels/OpenSimRoot,Life Forms and Biodiversity
+GlaThiDa,Glacier Thickness Database.,wgms,https://gitlab.com/wgms/glathida,Ice and Poles
+met.3D,Interactive three-dimensional visualization of numerical ensemble weather predictions and similar numerical atmospheric model datasets.,wxmetvis,https://gitlab.com/wxmetvis/met.3d,Atmosphere
+The Global Environmental Multiscale Model,"An integrated forecasting and data assimilation system developed by the Atmospheric Numerical Prediction Research Section, Meteorological Research Division, of Environment and Climate Change Canada.",eccc/gem,https://gitlab.com/eccc/gem/gem,Climate and Earth Modeling
+Imod-Python,Designed to help you in your MODFLOW groundwater modeling efforts.,deltares/imod,https://gitlab.com/deltares/imod/imod-python,Water
+RTC-Tools,A toolbox for control and optimization of water systems.,deltares,https://gitlab.com/deltares/rtc-tools,Water
+WWTP,EU28 Waste Water Treatment Plants.,hotmaps/potential,https://gitlab.com/hotmaps/potential/WWTP,Water
+OpenLandMap,"Data, services and web-apps providing access and interactive visualizations of the TB of high resolution data produced by the OpenGeoHub Foundation and contributing organizations.",,https://gitlab.com/openlandmap,Soil and Land
