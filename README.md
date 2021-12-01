@@ -9,17 +9,21 @@ AwesomeCure provides simple tools to analyze Git projects within an Awesome list
 
 First, you need to clone the GitHub-Repo. Do something like:
 
-```git clone git@github.com:protontypes/AwesomeCure.git
+```
+git clone git@github.com:protontypes/AwesomeCure.git
+```
 
 Then, you need to install jupiter notebook:
-(for example via pip)
+(for example via pip, see all options on [their website](https://jupyter.org/install))
 
-```pip install jupyterlab
-```pip install notebook
+```
+pip install jupyterlab
+pip install notebook
+```
 
-Then, add a `.env with your persoal git hub token
-https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+Then, add a `.env` with your persoal git hub token (see more information on that [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token). Then run:
 
-then run ```jupyter notebook
-
-and there you go :)
+```
+jupyter notebook
+```
+a browser window should open, if not, click (or copy paste) the link from your terminal output.
