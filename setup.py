@@ -6,5 +6,5 @@ setup(
     url='https://github.com/protontypes/sustainbeat.git',
     description='Analyze and cure awesome lists by mining data from listed Git projects',
     packages=find_packages(),
-    install_requires=['beautifulsoup4', 'markdown', 'pygithub', 'python-dotenv'],
+    install_requires=['termcolor', 'beautifulsoup4', 'markdown', 'pygithub', 'python-dotenv'],
 )
