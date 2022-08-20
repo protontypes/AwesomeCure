@@ -66,15 +66,15 @@ Plotting the dataset gives insides into the Open Source Ecosystems from differen
 
 ### Programming Languages 
 
-![programming_languages](/home/cy0/gitclones/AwesomeCure/docs/programming_languages.png)
+![programming_languages](./docs/programming_languages.png)
 
 ### Project Scores 
 
-![Score_example_plot](/home/cy0/gitclones/AwesomeCure/docs/Score_example_plot.png)
+![Score_example_plot](./docs/Score_example_plot.png)
 
 
 ### Communities and Organizations 
 
-![organizations](/home/cy0/gitclones/AwesomeCure/docs/organizations.png)
+![organizations](./docs/organizations.png)
 
-![organizations_forms](/home/cy0/gitclones/AwesomeCure/docs/organizations_forms.png)
+![organizations_forms](./docs/organizations_forms.png)
