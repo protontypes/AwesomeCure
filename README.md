@@ -51,12 +51,30 @@ The project was split into two Jupyter notebooks.  One for data acquisition and 
 
 ### Data Acquisition
 
-The [AwesomeCure](https://github.com/protontypes/AwesomeCure/blob/main/awesomecure.ipynb) notebook lets you read the Awesome List from any repository. Depending on the size of the list the processing can take multiple hours.
+The [AwesomeCure](./awesomecure.ipynb) notebook lets you read the Awesome List from any repository. Depending on the size of the list the processing can take multiple hours.
 
-![AwesomeCure](./docs/AwesomeCure.png)		
+![AwesomeCure](./docs/AwesomeCure.png)
 
 ### Data Processing
 
-Data processing is done in the following step with the output csv files form the data acquisition. Since not API key is needed for this step the processing can also been done online within Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD) 		  
+Data processing is done in the [ost_analysis.ipynb](ost_analysis.ipynb) with the output csv files form the data acquisition. Since not API key is needed for this step the processing can also been done online within Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD)
 
 ![OST_Analysis](./docs/OST_Analysis.png)
+
+## Results
+Plotting the dataset gives insides into the Open Source Ecosystems from different perspectives. 
+
+### Programming Languages 
+
+![programming_languages](/home/cy0/gitclones/AwesomeCure/docs/programming_languages.png)
+
+### Project Scores 
+
+![Score_example_plot](/home/cy0/gitclones/AwesomeCure/docs/Score_example_plot.png)
+
+
+### Communities and Organizations 
+
+![organizations](/home/cy0/gitclones/AwesomeCure/docs/organizations.png)
+
+![organizations_forms](/home/cy0/gitclones/AwesomeCure/docs/organizations_forms.png)
