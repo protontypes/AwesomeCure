@@ -53,10 +53,10 @@ The project was split into two Jupyter notebooks.  One for data acquisition and 
 
 The [AwesomeCure](https://github.com/protontypes/AwesomeCure/blob/main/awesomecure.ipynb) notebook lets you read the Awesome List from any repository. Depending on the size of the list the processing can take multiple hours.
 
-![AwesomeCure](/home/cy0/gitclones/AwesomeCure/docs/AwesomeCure.png)		
+![AwesomeCure](./docs/AwesomeCure.png)		
 
 ### Data Processing
 
 Data processing is done in the following step with the output csv files form the data acquisition. Since not API key is needed for this step the processing can also been done online within Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD) 		  
 
-![OST_Analysis](/home/cy0/gitclones/AwesomeCure/docs/OST_Analysis.png)
+![OST_Analysis](./docs/OST_Analysis.png)
