@@ -1,5 +1,5 @@
 # AwesomeCure
->  Analyze and cure awesome lists by collecting, processing and presenting data from listed Git projects..
+>  Analyze and cure awesome lists by collecting, processing and presenting data from listed Git projects.
 
  [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD)
 
