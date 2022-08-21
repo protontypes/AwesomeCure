@@ -11,8 +11,8 @@ Awesome lists are a central part of the open source ecosystem. They allow develo
 
 Maintaining an Awesome list requires removing inactive projects on a regular basis, investigating new projects and engaging the community to update the list. Without these measures, new and still active projects get lost in the multitude of inactive projects. The processing of such list gives the possibility to analyze these ecosystems with the help of data science methods in order to identify potentials and risks within the domain. 
 
-## Application Example
-The [OpenSustain.tech](https://opensustain.tech/) website is based on such an Awesome list, giving an overview of the active open source projects in climate and sustainable technology. 
+## Application
+The [OpenSustain.tech](https://opensustain.tech/) website is based on such an Awesome list, giving an overview of the active open source projects in climate and sustainable technology. In the current prototype project state, AwesomeCure can only be applied to this list, but generalization to all Awesome lists is possible.
 
 Most of the entries are linked to GitHub or GitLab repository of the underlying project. Therefore, AwesomeCure is able to analyze every project via the platform API to extract meta data from the listed projects. In this way, various health indicators are extracted like:
 
