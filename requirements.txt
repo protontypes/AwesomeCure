@@ -7,3 +7,4 @@ pygithub
 requests
 bs4
 termcolor
+markdown
