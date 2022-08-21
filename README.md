@@ -1,6 +1,8 @@
 # AwesomeCure
 >  Analyze and cure awesome lists by mining, processing and plotting data from listed Git projects.
 
+ [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD)
+
 AwesomeCure provides basic scripts to analyze Git projects within an Awesome list getting an overview of the represented open source domains. Use the GitHub API to retrieve meta data and generate various metrics about the state of open source ecosystems. As a result, spreadsheets and plots are created to sort and analyze all entries according to you needs. 
 
 ## Background
