@@ -9,3 +9,4 @@ bs4
 termcolor
 markdown
 python-dotenv
+pyyaml
