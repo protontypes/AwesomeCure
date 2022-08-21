@@ -1,7 +1,7 @@
 # AwesomeCure
->  Analyze and cure awesome lists by mining data from listed Git projects.
+>  Analyze and cure awesome lists by mining, processing and plotting data from listed Git projects.
 
-AwesomeCure provides simple tools to analyze Git projects within an Awesome list getting an overview of the represented open source domain. Use the GitHub API to retrieve project meta data and generate various metrics about the state of the project. As a result, a CSV is created to sort and analyze the listed projects according to the different criteria. 
+AwesomeCure provides basic scripts to analyze Git projects within an Awesome list getting an overview of the represented open source domain. Use the GitHub API to retrieve project meta data and generate various metrics about the state of the project. As a result, a CSV is created to sort and analyze the listed projects according to the different criteria. 
 
 ## Background
 
