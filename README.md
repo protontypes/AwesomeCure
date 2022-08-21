@@ -1,17 +1,18 @@
 # AwesomeCure
 >  Analyze and cure awesome lists by mining data from listed Git projects.
 
-AwesomeCure provides simple tools to analyze Git projects within an Awesome list and get an overview of the represented open source ecosystem. It uses the GitHub API to retrieve project metadata and generate various metrics about the state of the project. As a result, a CSV is created to sort and analyze the listed projects according to the different criteria. 
+AwesomeCure provides simple tools to analyze Git projects within an Awesome list getting an overview of the represented open source domain. Use the GitHub API to retrieve project meta data and generate various metrics about the state of the project. As a result, a CSV is created to sort and analyze the listed projects according to the different criteria. 
 
 ## Background
 
-So-called Awesome List are a central part of the open source ecosystem. They allow developers to get an overview of open source projects in different areas. A cross-platform search engine for open source projects does not yet exist. Therefore, they represent the central dictionary for the most diverse areas within the open source ecosystem. The Awesome.re website offers a central point of contact here, as it provides an overview of all subdomains. The central task of this list is to make projects within a subject area easier to find. Thus, users can browse appropriate resources. At the same time, developers can check which projects already exist, so that resources are concentrated and the wheel is not always reinvented.
+"Awesome List" are a central part of the open source ecosystem. They allow developers to get an overview of open source projects in different domains. A cross-platform search engine for open source projects does not yet exist. Therefore, they represent the central index for the diverse open source communities, so that development resources are concentrated and the wheel is reinvented again and again.
 
-Maintaining an Awesome list requires removing inactive projects on a regular basis. Without these measures, new and still active projects get lost in the multitude of inactive projects. At the same time, this help to concentrate open source resources on active projects instead of reinventing the wheel over and over again. The processing of the list additionally gives the possibility to analyze these ecosystems with the help of data science methods in order to identify potentials and risks within the domain. 
+Maintaining an Awesome list requires removing inactive projects on a regular basis, investigating new projects and engaging the community to update the list. Without these measures, new and still active projects get lost in the multitude of inactive projects. The processing of such list additionally gives the possibility to analyze these ecosystems with the help of data science methods in order to identify potentials and risks within the domain. 
 
-The OpenSustain.tech website is based on such an Awesome list, and we are currently working on an open source tooling to analyze the state of the open source ecosystem in the area of climate change related open source technology.
+## Application Example
+The [OpenSustain.tech](https://opensustain.tech/) website is based on such an Awesome list, giving an overview of the active open source projects in climate and sustainable technology in general. 
 
-Most of the projects are linked to GitHub or GitLab repository of the underlying project. Therefore, AwesomeCure is able to analyze every project via the platform API to extract meta data from the listed projects. In this way, various health indicators are extracted for every active and listed project within the ecosystem like:
+Most of the entries are linked to GitHub or GitLab repository of the underlying project. Therefore, AwesomeCure is able to analyze every project via the platform API to extract meta data from the listed projects. In this way, various health indicators are extracted for every active and listed project within the ecosystem like:
 
 * Last activity
 * Community Distribution Score ( How much does the project depend on a single person)
@@ -57,7 +58,9 @@ The [AwesomeCure](./awesomecure.ipynb) notebook lets you read the Awesome List f
 
 ### Data Processing
 
-Data processing is done in the [ost_analysis.ipynb](ost_analysis.ipynb) with the output csv files form the data acquisition. Since not API key is needed for this step the processing can also been done online within Binder: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD)
+Data processing is done in the [ost_analysis.ipynb](ost_analysis.ipynb) with the output csv files form the data acquisition. Since not API key is needed for this step the processing can also been done online within Binder:
+
+ [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/protontypes/AwesomeCure.git/HEAD)
 
 ![OST_Analysis](./docs/OST_Analysis.png)
 
