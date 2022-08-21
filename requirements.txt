@@ -3,3 +3,7 @@ plotly
 pandas
 dateparser
 pycountry
+pygithub
+requests
+bs4
+termcolor
