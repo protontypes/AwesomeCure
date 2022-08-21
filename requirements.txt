@@ -8,4 +8,4 @@ requests
 bs4
 termcolor
 markdown
-dotenv
+python-dotenv
