@@ -10,3 +10,4 @@ termcolor
 markdown
 python-dotenv
 pyyaml
+handcalcs
