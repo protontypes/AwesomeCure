@@ -3,8 +3,20 @@ name = "open-sustain-tech"
 version = "0.5.1"
 description = "Awesome List Curated"
 authors = ["Abderrahim Guennoune <aguennoune@outlook.com>"]
+license = "MIT"
+homepage = "https://opensustain.tech/"
+repository = "https://github.com/aguennoune/AwesomeCure/tree/main"
+blog "https://opensustain.tech/blog/the_open_source_sustainability_ecosystem/"
+keywords = ["open-source", "sustainability", "environmental", "technology", "awesome-list", "awesome-cure"]
 readme = "README.md"
 packages = [{include = "open_sustain_tech", from = "src"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
 
 [tool.poetry.scripts]
 oss-opt = "open_sustain_tech.main:app"
@@ -34,12 +46,13 @@ importlib-metadata = "^6.8.0"
 rich = "^13.6.0"
 poetry-core = "^1.8.1"
 typer-common-functions = "^0.0.7"
+simple-parsing = "^0.1.4"
 
 [tool.poetry.urls]
 "Awesome Cure" = "https://github.com/protontypes/AwesomeCure/issues"
 
 [tool.poetry.plugins."poetry.application.plugin"]
-oss-opt = "open_sustain_tech:OSSOptionPlugin"
+open-sustain-tech = "open_sustain_tech:OSSOptionPlugin"
 
 
 [[tool.poetry.source]]

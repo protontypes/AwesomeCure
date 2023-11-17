@@ -119,7 +119,7 @@ class AwesomeOSSOption(AwesomeList):
         print("\n\n\n\n\n")
 
     load_dotenv(), 'Environment variables could not be loaded'
-    g = Github(getenv("GITHUB"))
+    g = Github(getenv("GITHUB_API_KEY"))
     
     awesome_url = "https://github.com/protontypes/open-sustainable-technology"
     awesome_path = urlparse(awesome_url).path.strip("/")
@@ -141,8 +141,8 @@ class AwesomeOSSOption(AwesomeList):
     
     print(repo_dict)
     
-    csv_projects = open("./src/open_sustain_tech/csv/projects.csv", "w", newline="")
-    csv_github_organizations = open("./src/open_sustain_tech/csv/github_organizations.csv", "r", newline="")
+    csv_projects = open("./csv/projects.csv", "w", newline="")
+    csv_github_organizations = open("./csv/github_organizations.csv", "r", newline="")
 
     csv_fieldnames = [
         "project_name",
@@ -228,7 +228,7 @@ class AwesomeOSSOption(AwesomeList):
         
     csv_github_organizations.close()
         
-    csv_github_organizations = open("./src/open_sustain_tech/csv/github_organizations.csv", "a", newline="")
+    csv_github_organizations = open("./csv/github_organizations.csv", "a", newline="")
     writer_github_organizations = csv.DictWriter(csv_github_organizations,csv_github_organizations_fieldnames)
 
     retry = False
@@ -668,7 +668,7 @@ def main(
     ] = ".awesome.md",
 ):
     print(f"readme_content is {readme_content}")
-    print(f"--readme-file is {readme_file}")
+    print(f"--readme_file is {readme_file}")
 
 
 if __name__ == "__main__":
