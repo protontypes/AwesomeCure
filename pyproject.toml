@@ -6,7 +6,7 @@ authors = ["Abderrahim Guennoune <aguennoune@outlook.com>"]
 license = "MIT"
 homepage = "https://opensustain.tech/"
 repository = "https://github.com/aguennoune/AwesomeCure/tree/main"
-blog "https://opensustain.tech/blog/the_open_source_sustainability_ecosystem/"
+blog = "https://opensustain.tech/blog/the_open_source_sustainability_ecosystem/"
 keywords = ["open-source", "sustainability", "environmental", "technology", "awesome-list", "awesome-cure"]
 readme = "README.md"
 packages = [{include = "open_sustain_tech", from = "src"}]
