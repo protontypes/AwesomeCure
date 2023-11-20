@@ -49,7 +49,7 @@ class OpenSustainTech(Command):
             
         # Use the configuration values
         cfg = simple_parsing.parse(config_class=OSSOptionParserConfig, args=args, add_config_path_arg=True)
-        print(f"Parsing {cfg.readme_file} with {cfg.workers} workers ...")
+        print(f"Parsing {cfg.readme_file} with {cfg.worker} workers ...")
         
         # self.line("Open Sustain Tech")
         readme_content = OSSOptionParser()
