@@ -92,3 +92,59 @@ Plotting the dataset gives insides into the Open Source Ecosystems from differen
 ![organizations](./docs/organizations.png)
 
 ![organizations_forms](./docs/organizations_forms.png)
+
+## An extended Poetry's command-line interface by developing plugins as an alternative to Jupyter Notebooks
+
+##### Usage:
+
+From an integrated terminal, the plugin needs to depend on Poetry to interface with it, so we can run the following commands:
+
+```
+poetry install
+```
+
+If it's needed, we can use poetry or pip to install the command-line interface:
+
+```
+poetry add open-sustain-tech
+```
+
+or,
+
+```
+pip install open-sustain-tech
+```
+
+To run the plugin, we can use the following command:
+
+```
+oss-opt
+```
+or, commonly to poetry and python:
+
+```
+poetry run python -m open_sustain_tech
+```
+
+or,
+
+```
+poetry run oss-opt
+```
+
+As described in the `protontypes/AwesomeCure` under the `README.md` file, and under the `Architecture` section in reference to the `Data Acquisition`, the `oss-opt` command-line interface lets read the Awesome list from any repository as well.
+
+**Note:** Depending on the size of the list, the processing can take multiple hours.
+
+This is an update to the open_sustain_tech command-line interface, and here are the main changes to consider regarding this update:
+
+- The OpenSustainTech class is a subclass of the Command class from the cleo library. It has a handle method that is used to handle the command when the user executes it. The factory function is a simple function that creates and returns an instance of the OpenSustainTech class. This function is used as a "factory" for creating OpenSustainTech instances.
+
+- The Options class is a data class (thanks to the @dataclass decorator) that contains options for the command-line parser. It uses the simple_parsing library to define the options and their default values.
+
+- An ArgumentParser object is created and configured to use the options defined in the Options class. The command-line arguments are then parsed and stored in the args variable.
+
+- The OSSOptionPlugin class is a subclass of ApplicationPlugin from the poetry library. It has an activate method that is used to register the open_sustain_tech command with the application. It also has a commands property that returns a list of available commands, in this case, an instance of OpenSustainTech.
+
+## Many thanks to:
+Tobias Augspurger 

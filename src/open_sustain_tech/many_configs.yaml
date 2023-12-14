@@ -1,0 +1,6 @@
+parse:
+  readme_file: .awesome.md
+  workers: 42
+eval:
+  checkpoint: best.awesome
+  n_batches: 100
