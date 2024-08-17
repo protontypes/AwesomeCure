@@ -194,39 +194,64 @@ column_types = {
     'language': 'Text'
 }
 
-columns_to_create = [
+columns_to_defined = [
     {
         'id': column_name.replace(" ", "_").lower(),  
         'label': column_name,                        
     }
     for column_name in column_names
 ]
+columns_to_create = []
+records_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/records'
+delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
+columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/columns'
+
+
 
 print("Columns defined:",column_names)
 
 with requests.Session() as session:  # Using requests.Session for multiple requests
     session.headers.update(headers)  # Update session headers
 
-    # Fetch column data from API
-    columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/columns'
+        # Get all rowIds and delete existing records
+    response = handle_response(session.get(records_url))  # Handle response
+    row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
+    delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
+    response = handle_response(session.post(delete_url, json=row_ids))  # Delete existing records
+
+        # Validate the response
+    if response.status_code != 200:
+        print("Failed to delete existing records")
+        print(response.json())
+        exit()
 
     response = handle_response(session.get(columns_url))  # Handle response
-
     # Create a mapping from label to colRef (column ID)
     columns_data = response.json()
     column_mapping = {col["fields"]["label"]: col["id"] for col in columns_data["columns"]}
 
 #   ## Check if all columns in dataframe exist in Grist table
-    for col in df.columns:
+    for col in column_names:
         if col not in column_mapping.keys():
-            print(f"Column '{col}' does not exist in Grist table. Removing it from dataframe.")
-            df = df.drop(columns=[col])  # Remove non-existent columns
-    
-    response = handle_response(session.post(columns_url, json={'columns': columns_to_create}))
-    if response.status_code != 200:
-        print("Failed to create columns existing records")
-        print(response.json())
-        exit()
+            print(f"Column '{col}' does not exist in Grist table. Creating new column")
+            columns_to_create.append(col)  # Remove non-existent columns
+
+    if len(columns_to_create) > 0:
+
+        columns_to_create_dict = [
+            {
+                'id': column_name.replace(" ", "_").lower(),  
+                'label': column_name,                        
+            }
+            for column_name in columns_to_create
+        ]
+
+        print(columns_to_create_dict)
+        response = handle_response(session.post(columns_url, json={'columns': columns_to_create_dict}))
+        if response.status_code != 200:
+            print("Failed to create column")
+            print(response.json())
+            exit()
 
     data_list = df.to_dict(orient='records')  # Convert dataframe to list of dictionaries
 
@@ -238,24 +263,9 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
             
     grist_data = [{"fields": record} for record in data_list]  # Prepare data for Grist
 
-    # Endpoint URL for fetching/updating the table
-    url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/records'
-
-    # Get all rowIds and delete existing records
-    #response = handle_response(session.get(url))  # Handle response
-    #row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
-    #delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
-    #response = handle_response(session.post(delete_url, json=row_ids))  # Delete existing records
-
-    # Validate the response
-    if response.status_code != 200:
-        print("Failed to delete existing records")
-        print(response.json())
-        exit()
-
     # Upload new data from the CSV in batches
     for batch in create_batched_requests_by_size(grist_data, MAX_BYTES):
         print(f"Adding {len(batch)} records")
-        response = handle_response(session.post(url, json={"records": batch}))  # Upload data
+        response = handle_response(session.post(records_url, json={"records": batch}))  # Upload data
 
 print("Data uploaded successfully!")
