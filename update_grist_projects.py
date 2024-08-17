@@ -43,7 +43,6 @@ description = []
 category = []
 sub_category = []
 language = []
-docker_downloads = []
 DOIs = []
 total_citations = []
 
@@ -55,12 +54,7 @@ for index, row in df_ecosystems.iterrows():
         if row['packages'][package_manager]['downloads']:
             if row['packages'][package_manager]['downloads_period'] == "last-month":
                 package_downloads += row['packages'][package_manager]['downloads']
-        if row['packages'][package_manager]['docker_downloads_count']:
-            docker_download_count = row['packages'][package_manager]['docker_downloads_count']
-        else:
-            docker_download_count = 0
     download_counts.append(package_downloads)
-    docker_downloads.append(docker_download_count)
     url.append(row['url'])
     description.append(row['description'])
     category.append(row['category'])
@@ -75,17 +69,16 @@ for index, row in df_ecosystems.iterrows():
 
 
 df_extract = pd.DataFrame()
+df_extract['git_url'] = url
 df_extract['project_names'] = names
+df_extract['description'] = description
+df_extract['category'] = category
+df_extract['sub_category'] = sub_category
+df_extract['language'] = language
 df_extract['download_counts'] = download_counts
 df_extract['citations'] = total_citations
 df_extract['doi'] = DOIs
-df_extract['docker_downloads'] = docker_downloads
-#df_extract['category'] = category
-df_extract['sub_category'] = sub_category
 df_extract['git_url'] = url
-df_extract['description'] = description
-df_extract['language'] = language
-df_extract['docker_downloads'] = docker_downloads
 
 
 assert load_dotenv(), 'Environment variables could not be loaded'
@@ -216,6 +209,18 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
 
     # Fetch column data from API
     columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/columns'
+
+    response = handle_response(session.get(columns_url))  # Handle response
+
+    # Create a mapping from label to colRef (column ID)
+    columns_data = response.json()
+    column_mapping = {col["fields"]["label"]: col["id"] for col in columns_data["columns"]}
+
+#   ## Check if all columns in dataframe exist in Grist table
+    for col in df.columns:
+        if col not in column_mapping.keys():
+            print(f"Column '{col}' does not exist in Grist table. Removing it from dataframe.")
+            df = df.drop(columns=[col])  # Remove non-existent columns
     
     response = handle_response(session.post(columns_url, json={'columns': columns_to_create}))
     if response.status_code != 200:
