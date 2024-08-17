@@ -150,31 +150,6 @@ def handle_response(response):
         except (ValueError, KeyError):
             raise e
 
-
-# Function to create a new column in the table
-def create_column(column_name, column_type='Text'):
-    # Define the API endpoint for adding a column
-    url = f'{BASE_URL}/tables/{TABLE_ID}/columns'
-    
-    # Data to be sent in the request body
-    data = {
-        'fields': {
-            'id': column_name.replace(" ", "_").lower(),  # Convert to snake_case for ID
-            'label': column_name,                        # The column name as it appears in the UI
-            'type': column_type,                         # The type of the column ('Text', 'Numeric', etc.)
-        }
-    }
-    
-    # Make the POST request to create the column
-    response = requests.post(url, json=data, headers=headers)
-    
-    # Check if the request was successful
-    if response.status_code == 200:
-        print(f"Column '{column_name}' created successfully!")
-    else:
-        print(f"Failed to create column '{column_name}'. Status Code: {response.status_code}")
-
-
 # Load and clean data
 df = df_extract # Load data from CSV file
 df = df.where(pd.notna(df_extract), None)  # Replace NaN values with None
@@ -213,19 +188,26 @@ print("Columns defined:",column_names)
 with requests.Session() as session:  # Using requests.Session for multiple requests
     session.headers.update(headers)  # Update session headers
 
-        # Get all rowIds and delete existing records
+    # Get all rowIds and delete existing records
     response = handle_response(session.get(records_url))  # Handle response
     row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
     delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
     response = handle_response(session.post(delete_url, json=row_ids))  # Delete existing records
 
-        # Validate the response
+    # Validate the response
     if response.status_code != 200:
         print("Failed to delete existing records")
         print(response.json())
         exit()
 
     response = handle_response(session.get(columns_url))  # Handle response
+
+        # Validate the response
+    if response.status_code != 200:
+        print("Failed to get existing columns")
+        print(response.json())
+        exit()
+
     # Create a mapping from label to colRef (column ID)
     columns_data = response.json()
     column_mapping = {col["fields"]["label"]: col["id"] for col in columns_data["columns"]}
@@ -255,11 +237,11 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
 
     data_list = df.to_dict(orient='records')  # Convert dataframe to list of dictionaries
 
-    # Convert NaN values to None after converting to dictionary - AGAIN!
-    #for record in data_list:
-    #    for key, value in record.items():
-    #        if isinstance(value, float) and math.isnan(value):
-    #            record[key] = None  # Replace NaN values with None
+    #Convert NaN values to None after converting to dictionary - AGAIN!
+    for record in data_list:
+        for key, value in record.items():
+            if isinstance(value, float) and math.isnan(value):
+                record[key] = None  # Replace NaN values with None
             
     grist_data = [{"fields": record} for record in data_list]  # Prepare data for Grist
 
