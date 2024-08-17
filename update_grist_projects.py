@@ -46,38 +46,24 @@ for index, row in df_ecosystems.iterrows():
     else:
         DOIs.append(None)
 
-df_extract = pd.DataFrame()
-df_extract['git_url'] = url
-df_extract['project_names'] = names
-df_extract['description'] = description
-df_extract['category'] = category
-df_extract['sub_category'] = sub_category
-df_extract['language'] = language
-df_extract['download_counts'] = download_counts
-df_extract['citations'] = total_citations
-df_extract['doi'] = DOIs
-df_extract['git_url'] = url
-
-
-""" df_extract = pd.DataFrame()
-df_extract['git_url'] = df_ecosystems['url']
-df_extract['project_names'] = df_ecosystems['name']
-df_extract['description'] = df_ecosystems['description']
-df_extract['category'] = df_ecosystems['category']
-df_extract['sub_category'] = df_ecosystems['sub_category']
-df_extract['keywords'] = df_ecosystems['keywords']
-df_extract['language'] = df_ecosystems['language']
-df_extract['download_last-month'] = df_ecosystems['monthly_downloads']
-df_extract['citations'] = df_ecosystems['total_citations']
-df_extract['score'] = df_ecosystems['score']
-df_extract['readme_doi_urls'] = df_ecosystems['readme_doi_urls']
-df_extract['created_at'] = df_ecosystems['created_at']
-df_extract['updated_at'] = df_ecosystems['updated_at']
-df_extract['funding_links'] = df_ecosystems['funding_links']
-df_extract['last_synced_at'] = df_ecosystems['last_synced_at']
-df_extract['avatar_url'] = df_ecosystems['avatar_url']
-df_extract['packages'] = df_ecosystems['packages'] """
-
+df_grist = pd.DataFrame()
+df_grist['git_url'] = df_ecosystems['url'].astype(str).tolist()
+df_grist['project_names'] = df_ecosystems['name'].astype(str).tolist()
+df_grist['description'] = df_ecosystems['description'].astype(str).tolist()
+df_grist['category'] = df_ecosystems['category'].astype(str).tolist()
+df_grist['sub_category'] = df_ecosystems['sub_category'].astype(str).tolist()
+df_grist['keywords'] = df_ecosystems['keywords'].astype(str).tolist()
+df_grist['language'] = df_ecosystems['language'].astype(str).tolist()
+df_grist['download_last_month'] = df_ecosystems['monthly_downloads'].astype(str).tolist()
+df_grist['citations'] = df_ecosystems['total_citations'].tolist()
+df_grist['score'] = df_ecosystems['score'].astype(str).tolist()
+df_grist['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).tolist()
+df_grist['created_at'] = df_ecosystems['created_at'].astype(str).tolist()
+df_grist['updated_at'] = df_ecosystems['updated_at'].astype(str).tolist()
+df_grist['funding_links'] = df_ecosystems['funding_links'].astype(str).tolist()
+df_grist['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str).tolist()
+df_grist['avatar_url'] = df_ecosystems['avatar_url'].astype(str).tolist()
+#df_grist['packages'] = df_ecosystems['packages'].astype(str).tolist()
 
 assert load_dotenv(), 'Environment variables could not be loaded'
 
@@ -149,13 +135,12 @@ def handle_response(response):
             raise e
 
 # Load and clean data
-df = df_extract # Load data from CSV file
-df = df.where(pd.notna(df_extract), None)  # Replace NaN values with None
+df = df_grist # Load data from CSV file
+df = df.where(pd.notna(df_grist), None)  # Replace NaN values with None
 
 column_names = list(df.columns.values)
 
-
-column_types = {
+"""column_types = {
     'project_names': 'Text',
     'download_counts': 'Numeric',
     'citations': 'Integer',
@@ -165,7 +150,7 @@ column_types = {
     'git_url': 'Text',
     'description': 'Text',
     'language': 'Text'
-}
+}"""
 
 columns_to_defined = [
     {
