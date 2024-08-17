@@ -5,30 +5,10 @@ import math
 from os import getenv
 from dotenv import load_dotenv
 
-
-from habanero import counts
-
-from semanticscholar import SemanticScholar
-sch = SemanticScholar()
-
 URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
 FILE_TO_SAVE_AS = "ecosystems_repository_downloads.json" # the name you want to save file as
 
-pages=20
 resp = requests.get(URL) # making requests to server
-
-#all_data = {}
-#for page in range(1, pages + 1):
-#    data = requests.get(URL.format(page)).json()
-#    all_data.extend(data)
-    
-    
-#for page in range(1, pages + 1):
-#    print("Page:",page)
-#    data = requests.get(URL.format(page)).json()
-#    if 'status' in data:
-#        break
-#    all_data = {**all_data, **data[0]}
 
 with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new file 
     f.write(resp.content) # writing content to file
@@ -49,7 +29,6 @@ total_citations = []
 for index, row in df_ecosystems.iterrows():
     names.append(row['name'])
     package_downloads = 0
-    docker_download_count = 0
     for package_manager in range(len(row['packages'])):
         if row['packages'][package_manager]['downloads']:
             if row['packages'][package_manager]['downloads_period'] == "last-month":
@@ -69,16 +48,23 @@ for index, row in df_ecosystems.iterrows():
 
 
 df_extract = pd.DataFrame()
-df_extract['git_url'] = url
-df_extract['project_names'] = names
-df_extract['description'] = description
-df_extract['category'] = category
-df_extract['sub_category'] = sub_category
-df_extract['language'] = language
-df_extract['download_counts'] = download_counts
-df_extract['citations'] = total_citations
-df_extract['doi'] = DOIs
-df_extract['git_url'] = url
+df_extract['git_url'] = df_ecosystems['url']
+df_extract['project_names'] = df_ecosystems['name']
+df_extract['description'] = df_ecosystems['description']
+df_extract['category'] = df_ecosystems['category']
+df_extract['sub_category'] = df_ecosystems['sub_category']
+df_extract['keywords'] = df_ecosystems['keywords']
+df_extract['language'] = df_ecosystems['language']
+df_extract['download_last-month'] = df_ecosystems['monthly_downloads']
+df_extract['citations'] = df_ecosystems['total_citations']
+df_extract['score'] = df_ecosystems['score']
+df_extract['readme_doi_urls'] = df_ecosystems['readme_doi_urls']
+df_extract['created_at'] = df_ecosystems['created_at']
+df_extract['updated_at'] = df_ecosystems['updated_at']
+df_extract['funding_links'] = df_ecosystems['funding_links']
+df_extract['last_synced_at'] = df_ecosystems['last_synced_at']
+df_extract['avatar_url'] = df_ecosystems['avatar_url']
+df_extract['packages'] = df_ecosystems['packages']
 
 
 assert load_dotenv(), 'Environment variables could not be loaded'
