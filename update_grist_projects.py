@@ -46,8 +46,20 @@ for index, row in df_ecosystems.iterrows():
     else:
         DOIs.append(None)
 
-
 df_extract = pd.DataFrame()
+df_extract['git_url'] = url
+df_extract['project_names'] = names
+df_extract['description'] = description
+df_extract['category'] = category
+df_extract['sub_category'] = sub_category
+df_extract['language'] = language
+df_extract['download_counts'] = download_counts
+df_extract['citations'] = total_citations
+df_extract['doi'] = DOIs
+df_extract['git_url'] = url
+
+
+""" df_extract = pd.DataFrame()
 df_extract['git_url'] = df_ecosystems['url']
 df_extract['project_names'] = df_ecosystems['name']
 df_extract['description'] = df_ecosystems['description']
@@ -64,7 +76,7 @@ df_extract['updated_at'] = df_ecosystems['updated_at']
 df_extract['funding_links'] = df_ecosystems['funding_links']
 df_extract['last_synced_at'] = df_ecosystems['last_synced_at']
 df_extract['avatar_url'] = df_ecosystems['avatar_url']
-df_extract['packages'] = df_ecosystems['packages']
+df_extract['packages'] = df_ecosystems['packages'] """
 
 
 assert load_dotenv(), 'Environment variables could not be loaded'
