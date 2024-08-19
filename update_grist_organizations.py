@@ -1,3 +1,4 @@
+# https://community.getgrist.com/t/how-to-update-all-contents-of-a-table-from-a-local-remote-csv-file-using-python-api/3179/6
 import json
 import os
 import requests
@@ -112,20 +113,20 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
     url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/records'
 
     # Get all rowIds and delete existing records
-    response = handle_response(session.get(url))  # Handle response
-    row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
-    delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
-    response = handle_response(session.post(delete_url, json=row_ids))  # Delete existing records
+    #response = handle_response(session.get(url))  # Handle response
+    #row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
+    #delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
+    #response = handle_response(session.post(delete_url, json=row_ids))  # Delete existing records
 
     # Validate the response
-    if response.status_code != 200:
-        print("Failed to delete existing records")
-        print(response.json())
-        exit()
+    #if response.status_code != 200:
+    #    print("Failed to delete existing records")
+    #    print(response.json())
+    #    exit()
 
     # Upload new data from the CSV in batches
     for batch in create_batched_requests_by_size(grist_data, MAX_BYTES):
         print(f"Adding {len(batch)} records")
-        response = handle_response(session.post(url, json={"records": batch}))  # Upload data
+        response = handle_response(session.post(url, json={"records": batch}, params={"onmany": "all"}))  # Upload data
 
 print("Data uploaded successfully!")
