@@ -81,6 +81,8 @@ organization_created_at = []
 organization_updated_at = []
 organization_icon_url = []
 organization_funding_links = []
+organization_category = {[]}
+organization_sub_category = {[]}
 
 for index, row in df_ecosystems.iterrows():
     if row['repository'] is not None:
@@ -115,21 +117,24 @@ for index, row in df_ecosystems.iterrows():
         DOIs.append(None)
     
     if row['owner'] is not None and row['owner']['kind'] == 'organization':
-        organization_name.append(row['owner']['name'])
         if row['owner']['name'] in total_listed_projects_in_organization:
             total_listed_projects_in_organization[row['owner']['name']] += 1
         else: 
             total_listed_projects_in_organization[row['owner']['name']] = 1 
-        organization_description.append(row['owner']['description'])
-        organization_location.append(row['owner']['location'])
-        organization_email.append(row['owner']['email'])
-        organization_twitter_handle.append(row['owner']['twitter'])
-        organization_repositories_counts.append(row['owner']['repositories_count'])
-        organization_website.append(row['owner']['website']) 
-        organization_created_at.append(row['owner']['created_at'])
-        organization_updated_at.append(row['owner']['updated_at'])
-        organization_icon_url.append(row['owner']['icon_url'])
-        organization_funding_links.append(str(row['owner']['funding_links']))
+        if row['owner']['name'] not in organization_name:
+            organization_name.append(row['owner']['name'])
+            organization_description.append(row['owner']['description'])
+            organization_location.append(row['owner']['location'])
+            organization_email.append(row['owner']['email'])
+            organization_twitter_handle.append(row['owner']['twitter'])
+            organization_repositories_counts.append(row['owner']['repositories_count'])
+            organization_website.append(row['owner']['website']) 
+            organization_created_at.append(row['owner']['created_at'])
+            organization_updated_at.append(row['owner']['updated_at'])
+            organization_icon_url.append(row['owner']['icon_url'])
+            organization_funding_links.append(str(row['owner']['funding_links']))
+            organization_category[row['owner']['name']].append(row['category'])
+            organization_sub_category[row['owner']['name']].append(row['sub_category'])
 
 df_grist_projects = pd.DataFrame()
 df_grist_projects['project_names'] = df_ecosystems['name'].astype(str)
@@ -157,12 +162,13 @@ df_grist_projects['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str
 df_grist_projects['entry_created_at'] = df_ecosystems['created_at'].astype(str)
 df_grist_projects['project_updated_at'] = df_ecosystems['updated_at'].astype(str)
 
+
 df_grist_organization = pd.DataFrame()
 df_grist_organization['organization_name'] = organization_name
 df_grist_organization['organization_description'] = organization_description
 df_grist_organization['organization_location'] = organization_location
-df_grist_organization['total_listed_projects_in_organization'] = total_listed_projects_in_organization
 df_grist_organization['organization_email'] = organization_email
+df_grist_organization['total_listed_projects_in_organization'] = total_listed_projects_in_organization.values()
 df_grist_organization['organization_twitter_handle'] = organization_twitter_handle
 df_grist_organization['organization_repositories_counts'] = organization_repositories_counts
 df_grist_organization['organization_website'] = organization_website
@@ -170,8 +176,8 @@ df_grist_organization['organization_created_at'] = organization_created_at
 df_grist_organization['organization_updated_at'] = organization_updated_at
 df_grist_organization['organization_icon_url'] = organization_icon_url
 df_grist_organization['organization_funding_links'] = organization_funding_links
-
-print(df_grist_organization)
+df_grist_organization['organization_category'] = organization_category
+df_grist_organization['organization_sub_category'] = organization_sub_category
 
 def calculate_size_in_bytes(data):
     """
