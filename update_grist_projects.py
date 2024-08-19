@@ -125,39 +125,53 @@ for index, row in df_ecosystems.iterrows():
         organization_email.append(row['owner']['email'])
         organization_twitter_handle.append(row['owner']['twitter'])
         organization_repositories_counts.append(row['owner']['repositories_count'])
-        organization_osta_counts.append(total_listed_projects_in_organization[row['owner']['name']])
         organization_website.append(row['owner']['website']) 
-        organization_created_at.append(row['owner']['funding_links'])
-        organization_updated_at.append(row['owner']['total_stars'])
+        organization_created_at.append(row['owner']['created_at'])
+        organization_updated_at.append(row['owner']['updated_at'])
         organization_icon_url.append(row['owner']['icon_url'])
-        organization_funding_links.append(row['owner']['funding_links'])
+        organization_funding_links.append(str(row['owner']['funding_links']))
 
+df_grist_projects = pd.DataFrame()
+df_grist_projects['project_names'] = df_ecosystems['name'].astype(str)
+df_grist_projects['git_url'] = df_ecosystems['url'].astype(str)
+df_grist_projects['description'] = df_ecosystems['description'].astype(str)
+df_grist_projects['homepage'] = homepage
+df_grist_projects['category'] = df_ecosystems['category'].astype(str)
+df_grist_projects['sub_category'] = df_ecosystems['sub_category'].astype(str)
+df_grist_projects['latest_commit_activity'] = latest_commit_activity
+df_grist_projects['keywords'] = df_ecosystems['keywords'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
+df_grist_projects['language'] = df_ecosystems['language'].astype(str)
+df_grist_projects['license'] = license
+df_grist_projects['downloads_last_month'] = df_ecosystems['monthly_downloads'].astype(str)
+df_grist_projects['stars'] = stars
+df_grist_projects['development_distribution_score'] = development_distribution_score
+df_grist_projects['score'] = df_ecosystems['score'].astype(str)
+df_grist_projects['total_committers'] = total_committers
+df_grist_projects['citations'] = df_ecosystems['total_citations'].astype(str)
+df_grist_projects['project_created_at'] = project_created_at
+df_grist_projects['total_commits'] = total_commits
+df_grist_projects['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
+df_grist_projects['funding_links'] = df_ecosystems['funding_links'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
+df_grist_projects['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
+df_grist_projects['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str)
+df_grist_projects['entry_created_at'] = df_ecosystems['created_at'].astype(str)
+df_grist_projects['project_updated_at'] = df_ecosystems['updated_at'].astype(str)
 
-df_grist = pd.DataFrame()
-df_grist['project_names'] = df_ecosystems['name'].astype(str)
-df_grist['git_url'] = df_ecosystems['url'].astype(str)
-df_grist['description'] = df_ecosystems['description'].astype(str)
-df_grist['homepage'] = homepage
-df_grist['category'] = df_ecosystems['category'].astype(str)
-df_grist['sub_category'] = df_ecosystems['sub_category'].astype(str)
-df_grist['latest_commit_activity'] = latest_commit_activity
-df_grist['keywords'] = df_ecosystems['keywords'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
-df_grist['language'] = df_ecosystems['language'].astype(str).tolist()
-df_grist['license'] = license
-df_grist['downloads_last_month'] = df_ecosystems['monthly_downloads'].astype(str)
-df_grist['stars'] = stars
-df_grist['development_distribution_score'] = development_distribution_score
-df_grist['score'] = df_ecosystems['score'].astype(str)
-df_grist['total_committers'] = total_committers
-df_grist['citations'] = df_ecosystems['total_citations'].astype(str)
-df_grist['project_created_at'] = project_created_at
-df_grist['total_commits'] = total_commits
-df_grist['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
-df_grist['funding_links'] = df_ecosystems['funding_links'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
-df_grist['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
-df_grist['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str)
-df_grist['entry_created_at'] = df_ecosystems['created_at'].astype(str)
-df_grist['project_updated_at'] = df_ecosystems['updated_at'].astype(str)
+df_grist_organization = pd.DataFrame()
+df_grist_organization['organization_name'] = organization_name
+df_grist_organization['organization_description'] = organization_description
+df_grist_organization['organization_location'] = organization_location
+df_grist_organization['total_listed_projects_in_organization'] = total_listed_projects_in_organization
+df_grist_organization['organization_email'] = organization_email
+df_grist_organization['organization_twitter_handle'] = organization_twitter_handle
+df_grist_organization['organization_repositories_counts'] = organization_repositories_counts
+df_grist_organization['organization_website'] = organization_website
+df_grist_organization['organization_created_at'] = organization_created_at
+df_grist_organization['organization_updated_at'] = organization_updated_at
+df_grist_organization['organization_icon_url'] = organization_icon_url
+df_grist_organization['organization_funding_links'] = organization_funding_links
+
+print(df_grist_organization)
 
 def calculate_size_in_bytes(data):
     """
@@ -214,8 +228,8 @@ def handle_response(response):
             raise e
 
 # Load and clean data
-df = df_grist # Load data from CSV file
-df = df.where(pd.notna(df_grist), None)  # Replace NaN values with None
+df = df_grist_projects # Load data from CSV file
+df = df.where(pd.notna(df_grist_projects), None)  # Replace NaN values with None
 
 column_names = list(df.columns.values)
 print("Columns defined:",column_names)
@@ -283,15 +297,22 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
         print(f"Adding {len(batch)} records")
         response = handle_response(session.post(project_records_url, json={"records": batch}))  # Upload data
 
-print("Projects Data uploaded successfully!")
-"""
+print("Project Data uploaded successfully!")
+
+
+df = df_grist_organization # Load data from CSV file
+df = df.where(pd.notna(df_grist_organization), None)  # Replace NaN values with None
+
+column_names = list(df.columns.values)
+print("Columns defined:",column_names)
+
 with requests.Session() as session:  # Using requests.Session for multiple requests
     session.headers.update(headers)  # Update session headers
 
     # Get all rowIds and delete existing records
     response = handle_response(session.get(org_records_url))  # Handle response
     row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
-    response = handle_response(session.post(project_delete_url, json=row_ids))  # Delete existing records
+    response = handle_response(session.post(org_delete_url, json=row_ids))  # Delete existing records
 
     # Validate the response
     if response.status_code != 200:
@@ -322,11 +343,11 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
             {
                 'id': column_name.replace(" ", "_").lower(),  
                 'label': column_name,                        
-                'type': column_types.get(column_name, 'Text')
+                #'type': column_types.get(column_name, 'Text')
             }
-            for column_name in project_columns_to_create
+            for column_name in org_columns_to_create
         ]
-        response = handle_response(session.post(project_columns_url, json={'columns': columns_to_defined}))
+        response = handle_response(session.post(org_columns_url, json={'columns': columns_to_defined}))
     
         if response.status_code != 200:
             print("Failed to create column")
@@ -346,6 +367,6 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
     # Upload new data from the CSV in batches
     for batch in create_batched_requests_by_size(grist_data, MAX_BYTES):
         print(f"Adding {len(batch)} records")
-        response = handle_response(session.post(project_records_url, json={"records": batch}))  # Upload data
+        response = handle_response(session.post(org_records_url, json={"records": batch}))  # Upload data
 
-print("Organizations Data uploaded successfully!")"""
+print("Organization Data uploaded successfully!")
