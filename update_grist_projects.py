@@ -4,6 +4,9 @@ import pandas as pd
 import math
 from os import getenv
 from dotenv import load_dotenv
+from io import StringIO
+from urllib.parse import urlparse
+
 
 URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
 FILE_TO_SAVE_AS = "ecosystems_repository_downloads.json" # the name you want to save file as
@@ -12,34 +15,40 @@ resp = requests.get(URL) # making requests to server
 
 with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new file 
     f.write(resp.content) # writing content to file
-df_ecosystems = pd.read_json(resp.content.decode())
+df_ecosystems = pd.read_json(StringIO(resp.content.decode()))
 
-
-from urllib.parse import urlparse
-names = []
-download_counts = []
-url = []
-description = []
-category = []
-sub_category = []
-language = []
+stars = []
+homepage = []
+license = []
 DOIs = []
-total_citations = []
+project_created_at = []
+total_commits = []
+total_committers = []
+development_distribution_score = []
 
 for index, row in df_ecosystems.iterrows():
-    names.append(row['name'])
-    package_downloads = 0
-    for package_manager in range(len(row['packages'])):
-        if row['packages'][package_manager]['downloads']:
-            if row['packages'][package_manager]['downloads_period'] == "last-month":
-                package_downloads += row['packages'][package_manager]['downloads']
-    download_counts.append(package_downloads)
-    url.append(row['url'])
-    description.append(row['description'])
-    category.append(row['category'])
-    sub_category.append(row['sub_category'])
-    language.append(row['language'])
-    total_citations.append(row['total_citations']) 
+    if row['repository'] is not None:
+        stars.append(row['repository']['stargazers_count'])
+        license.append(row['repository']['license']) 
+        homepage.append(row['repository']['homepage'])
+        project_created_at.append(row['repository']['created_at'])
+        if row['repository']['commit_stats'] is not None:
+            total_commits.append(row['repository']['commit_stats']['total_commits'])
+            total_committers.append(row['repository']['commit_stats']['total_committers'])
+            development_distribution_score.append(row['repository']['commit_stats']['dds'])
+        else:
+            total_commits.append(None)
+            total_committers.append(None)
+            development_distribution_score.append(None)
+    else:
+        stars.append(None)
+        license.append(None)
+        homepage.append(row['url'])
+        project_created_at.append(None)
+        total_commits.append(None)
+        total_committers.append(None)
+        development_distribution_score.append(None)
+
     if row['readme_doi_urls']:
         doi = urlparse(row['readme_doi_urls'][0]).path[1:]
         DOIs.append(doi)
@@ -47,23 +56,48 @@ for index, row in df_ecosystems.iterrows():
         DOIs.append(None)
 
 df_grist = pd.DataFrame()
-df_grist['git_url'] = df_ecosystems['url'].astype(str).tolist()
-df_grist['project_names'] = df_ecosystems['name'].astype(str).tolist()
-df_grist['description'] = df_ecosystems['description'].astype(str).tolist()
-df_grist['category'] = df_ecosystems['category'].astype(str).tolist()
-df_grist['sub_category'] = df_ecosystems['sub_category'].astype(str).tolist()
-df_grist['keywords'] = df_ecosystems['keywords'].astype(str).tolist()
+df_grist['git_url'] = df_ecosystems['url'].astype(str)
+df_grist['project_names'] = df_ecosystems['name'].astype(str)
+df_grist['description'] = df_ecosystems['description'].astype(str)
+df_grist['category'] = df_ecosystems['category'].astype(str)
+df_grist['sub_category'] = df_ecosystems['sub_category'].astype(str)
+df_grist['keywords'] = df_ecosystems['keywords'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
 df_grist['language'] = df_ecosystems['language'].astype(str).tolist()
-df_grist['download_last_month'] = df_ecosystems['monthly_downloads'].astype(str).tolist()
-df_grist['citations'] = df_ecosystems['total_citations'].tolist()
-df_grist['score'] = df_ecosystems['score'].astype(str).tolist()
-df_grist['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).tolist()
-df_grist['created_at'] = df_ecosystems['created_at'].astype(str).tolist()
-df_grist['updated_at'] = df_ecosystems['updated_at'].astype(str).tolist()
-df_grist['funding_links'] = df_ecosystems['funding_links'].astype(str).tolist()
-df_grist['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str).tolist()
-df_grist['avatar_url'] = df_ecosystems['avatar_url'].astype(str).tolist()
+df_grist['downloads_last_month'] = df_ecosystems['monthly_downloads'].astype(str)
+df_grist['citations'] = df_ecosystems['total_citations'].astype(str)
+df_grist['score'] = df_ecosystems['score'].astype(str)
+df_grist['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
+df_grist['funding_links'] = df_ecosystems['funding_links'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
+df_grist['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str)
+df_grist['entry_created_at'] = df_ecosystems['created_at'].astype(str)
+df_grist['project_updated_at'] = df_ecosystems['updated_at'].astype(str)
+df_grist['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
+df_grist['stars'] = stars
+df_grist['license'] = license
+df_grist['homepage'] = homepage
+df_grist['project_created_at'] = project_created_at
+df_grist['total_commits'] = total_commits
+df_grist['total_committers'] = total_committers
+df_grist['development_distribution_score'] = development_distribution_score
+
+
 #df_grist['packages'] = df_ecosystems['packages'].astype(str).tolist()
+
+
+column_types = {
+    'project_names': 'Text',
+    'download_counts': 'Numeric',
+    'citations': 'Integer',
+    'doi': 'Text',
+    'docker_downloads': 'Integer',
+    'sub_category': 'Text',
+    'git_url': 'Text',
+    'description': 'Text',
+    'language': 'Text',
+    'keywords': 'Choice List',
+    'score': 'Numeric',
+    'created_at': 'DateTime',
+}
 
 assert load_dotenv(), 'Environment variables could not be loaded'
 
@@ -140,25 +174,6 @@ df = df.where(pd.notna(df_grist), None)  # Replace NaN values with None
 
 column_names = list(df.columns.values)
 
-"""column_types = {
-    'project_names': 'Text',
-    'download_counts': 'Numeric',
-    'citations': 'Integer',
-    'doi': 'Text',
-    'docker_downloads': 'Integer',
-    'sub_category': 'Text',
-    'git_url': 'Text',
-    'description': 'Text',
-    'language': 'Text'
-}"""
-
-columns_to_defined = [
-    {
-        'id': column_name.replace(" ", "_").lower(),  
-        'label': column_name,                        
-    }
-    for column_name in column_names
-]
 columns_to_create = []
 records_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/records'
 delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
@@ -202,17 +217,16 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
             columns_to_create.append(col)  # Remove non-existent columns
 
     if len(columns_to_create) > 0:
-
-        columns_to_create_dict = [
+        columns_to_defined = [
             {
                 'id': column_name.replace(" ", "_").lower(),  
                 'label': column_name,                        
+                'type': column_types.get(column_name, 'Text')
             }
             for column_name in columns_to_create
         ]
-
-        print(columns_to_create_dict)
-        response = handle_response(session.post(columns_url, json={'columns': columns_to_create_dict}))
+        response = handle_response(session.post(columns_url, json={'columns': columns_to_defined}))
+    
         if response.status_code != 200:
             print("Failed to create column")
             print(response.json())
