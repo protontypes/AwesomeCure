@@ -7,6 +7,45 @@ from dotenv import load_dotenv
 from io import StringIO
 from urllib.parse import urlparse
 
+## defines all Grist types that are not text by default.
+column_types = {
+    'download_counts': 'Numeric',
+    'citations': 'Integer',
+    'docker_downloads': 'Integer',
+    'category': 'Choice',
+    'sub_category': 'Choice',
+    'language': 'Choice',
+    'keywords': 'Choice List',
+    'score': 'Numeric',
+    'created_at': 'DateTime',
+    'license': 'Choice'
+}
+
+assert load_dotenv(), 'Environment variables could not be loaded'
+
+# Replace these with your values
+API_KEY = getenv("GRIST")
+DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY'
+CSV_FILE_PATH = './csv/ost_deployment.csv'
+MAX_BYTES = 500_000
+
+TABLE_NAME_PROJECTS = 'Projects'
+project_columns_to_create = []
+project_records_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_PROJECTS}/records'
+project_delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_PROJECTS}/data/delete'
+project_columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_PROJECTS}/columns'
+
+TABLE_NAME_ORGANIZATIONS = 'Organizations'
+org_columns_to_create = []
+org_records_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_ORGANIZATIONS}/records'
+org_delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_ORGANIZATIONS}/data/delete'
+org_columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_ORGANIZATIONS}/columns'
+
+# Headers for API request
+headers = {
+    'Authorization': f'Bearer {API_KEY}',
+    'Content-Type': 'application/json'
+}
 
 URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
 FILE_TO_SAVE_AS = "ecosystems_repository_downloads.json" # the name you want to save file as
@@ -25,6 +64,23 @@ project_created_at = []
 total_commits = []
 total_committers = []
 development_distribution_score = []
+latest_commit_activity = []
+listed_projects = []
+funding_ymls = []
+
+organization_name = []
+total_listed_projects_in_organization = {}
+organization_description = []
+organization_location = []
+organization_email = []
+organization_twitter_handle = []
+organization_osta_counts = []
+organization_repositories_counts = []
+organization_website = []
+organization_created_at = []
+organization_updated_at = []
+organization_icon_url = []
+organization_funding_links = []
 
 for index, row in df_ecosystems.iterrows():
     if row['repository'] is not None:
@@ -36,10 +92,12 @@ for index, row in df_ecosystems.iterrows():
             total_commits.append(row['repository']['commit_stats']['total_commits'])
             total_committers.append(row['repository']['commit_stats']['total_committers'])
             development_distribution_score.append(row['repository']['commit_stats']['dds'])
+            latest_commit_activity.append(row['repository']['pushed_at'])
         else:
             total_commits.append(None)
             total_committers.append(None)
             development_distribution_score.append(None)
+            latest_commit_activity.append(None)
     else:
         stars.append(None)
         license.append(None)
@@ -47,6 +105,7 @@ for index, row in df_ecosystems.iterrows():
         project_created_at.append(None)
         total_commits.append(None)
         total_committers.append(None)
+        latest_commit_activity.append(None)
         development_distribution_score.append(None)
 
     if row['readme_doi_urls']:
@@ -54,65 +113,51 @@ for index, row in df_ecosystems.iterrows():
         DOIs.append(doi)
     else:
         DOIs.append(None)
+    
+    if row['owner'] is not None and row['owner']['kind'] == 'organization':
+        organization_name.append(row['owner']['name'])
+        if row['owner']['name'] in total_listed_projects_in_organization:
+            total_listed_projects_in_organization[row['owner']['name']] += 1
+        else: 
+            total_listed_projects_in_organization[row['owner']['name']] = 1 
+        organization_description.append(row['owner']['description'])
+        organization_location.append(row['owner']['location'])
+        organization_email.append(row['owner']['email'])
+        organization_twitter_handle.append(row['owner']['twitter'])
+        organization_repositories_counts.append(row['owner']['repositories_count'])
+        organization_osta_counts.append(total_listed_projects_in_organization[row['owner']['name']])
+        organization_website.append(row['owner']['website']) 
+        organization_created_at.append(row['owner']['funding_links'])
+        organization_updated_at.append(row['owner']['total_stars'])
+        organization_icon_url.append(row['owner']['icon_url'])
+        organization_funding_links.append(row['owner']['funding_links'])
+
 
 df_grist = pd.DataFrame()
-df_grist['git_url'] = df_ecosystems['url'].astype(str)
 df_grist['project_names'] = df_ecosystems['name'].astype(str)
+df_grist['git_url'] = df_ecosystems['url'].astype(str)
 df_grist['description'] = df_ecosystems['description'].astype(str)
+df_grist['homepage'] = homepage
 df_grist['category'] = df_ecosystems['category'].astype(str)
 df_grist['sub_category'] = df_ecosystems['sub_category'].astype(str)
+df_grist['latest_commit_activity'] = latest_commit_activity
 df_grist['keywords'] = df_ecosystems['keywords'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
 df_grist['language'] = df_ecosystems['language'].astype(str).tolist()
+df_grist['license'] = license
 df_grist['downloads_last_month'] = df_ecosystems['monthly_downloads'].astype(str)
-df_grist['citations'] = df_ecosystems['total_citations'].astype(str)
+df_grist['stars'] = stars
+df_grist['development_distribution_score'] = development_distribution_score
 df_grist['score'] = df_ecosystems['score'].astype(str)
+df_grist['total_committers'] = total_committers
+df_grist['citations'] = df_ecosystems['total_citations'].astype(str)
+df_grist['project_created_at'] = project_created_at
+df_grist['total_commits'] = total_commits
 df_grist['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
 df_grist['funding_links'] = df_ecosystems['funding_links'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
+df_grist['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
 df_grist['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str)
 df_grist['entry_created_at'] = df_ecosystems['created_at'].astype(str)
 df_grist['project_updated_at'] = df_ecosystems['updated_at'].astype(str)
-df_grist['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
-df_grist['stars'] = stars
-df_grist['license'] = license
-df_grist['homepage'] = homepage
-df_grist['project_created_at'] = project_created_at
-df_grist['total_commits'] = total_commits
-df_grist['total_committers'] = total_committers
-df_grist['development_distribution_score'] = development_distribution_score
-
-
-#df_grist['packages'] = df_ecosystems['packages'].astype(str).tolist()
-
-
-column_types = {
-    'project_names': 'Text',
-    'download_counts': 'Numeric',
-    'citations': 'Integer',
-    'doi': 'Text',
-    'docker_downloads': 'Integer',
-    'sub_category': 'Text',
-    'git_url': 'Text',
-    'description': 'Text',
-    'language': 'Text',
-    'keywords': 'Choice List',
-    'score': 'Numeric',
-    'created_at': 'DateTime',
-}
-
-assert load_dotenv(), 'Environment variables could not be loaded'
-
-# Replace these with your values
-API_KEY = getenv("GRIST")
-DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY'
-TABLE_NAME = 'Projects'
-CSV_FILE_PATH = './csv/ost_deployment.csv'
-MAX_BYTES = 500_000
-
-# Headers for API request
-headers = {
-    'Authorization': f'Bearer {API_KEY}',
-    'Content-Type': 'application/json'
-}
 
 def calculate_size_in_bytes(data):
     """
@@ -173,24 +218,15 @@ df = df_grist # Load data from CSV file
 df = df.where(pd.notna(df_grist), None)  # Replace NaN values with None
 
 column_names = list(df.columns.values)
-
-columns_to_create = []
-records_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/records'
-delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
-columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/columns'
-
-
-
 print("Columns defined:",column_names)
 
 with requests.Session() as session:  # Using requests.Session for multiple requests
     session.headers.update(headers)  # Update session headers
 
     # Get all rowIds and delete existing records
-    response = handle_response(session.get(records_url))  # Handle response
+    response = handle_response(session.get(project_records_url))  # Handle response
     row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
-    delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME}/data/delete'
-    response = handle_response(session.post(delete_url, json=row_ids))  # Delete existing records
+    response = handle_response(session.post(project_delete_url, json=row_ids))  # Delete existing records
 
     # Validate the response
     if response.status_code != 200:
@@ -198,7 +234,7 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
         print(response.json())
         exit()
 
-    response = handle_response(session.get(columns_url))  # Handle response
+    response = handle_response(session.get(project_columns_url))  # Handle response
 
         # Validate the response
     if response.status_code != 200:
@@ -214,18 +250,18 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
     for col in column_names:
         if col not in column_mapping.keys():
             print(f"Column '{col}' does not exist in Grist table. Creating new column")
-            columns_to_create.append(col)  # Remove non-existent columns
+            project_columns_to_create.append(col)  # Remove non-existent columns
 
-    if len(columns_to_create) > 0:
+    if len(project_columns_to_create) > 0:
         columns_to_defined = [
             {
                 'id': column_name.replace(" ", "_").lower(),  
                 'label': column_name,                        
                 'type': column_types.get(column_name, 'Text')
             }
-            for column_name in columns_to_create
+            for column_name in project_columns_to_create
         ]
-        response = handle_response(session.post(columns_url, json={'columns': columns_to_defined}))
+        response = handle_response(session.post(project_columns_url, json={'columns': columns_to_defined}))
     
         if response.status_code != 200:
             print("Failed to create column")
@@ -245,6 +281,71 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
     # Upload new data from the CSV in batches
     for batch in create_batched_requests_by_size(grist_data, MAX_BYTES):
         print(f"Adding {len(batch)} records")
-        response = handle_response(session.post(records_url, json={"records": batch}))  # Upload data
+        response = handle_response(session.post(project_records_url, json={"records": batch}))  # Upload data
 
-print("Data uploaded successfully!")
+print("Projects Data uploaded successfully!")
+"""
+with requests.Session() as session:  # Using requests.Session for multiple requests
+    session.headers.update(headers)  # Update session headers
+
+    # Get all rowIds and delete existing records
+    response = handle_response(session.get(org_records_url))  # Handle response
+    row_ids = [r["id"] for r in response.json()["records"]]  # Get row ids
+    response = handle_response(session.post(project_delete_url, json=row_ids))  # Delete existing records
+
+    # Validate the response
+    if response.status_code != 200:
+        print("Failed to delete existing records")
+        print(response.json())
+        exit()
+
+    response = handle_response(session.get(org_columns_url))  # Handle response
+
+        # Validate the response
+    if response.status_code != 200:
+        print("Failed to get existing columns")
+        print(response.json())
+        exit()
+
+    # Create a mapping from label to colRef (column ID)
+    columns_data = response.json()
+    column_mapping = {col["fields"]["label"]: col["id"] for col in columns_data["columns"]}
+
+#   ## Check if all columns in dataframe exist in Grist table
+    for col in column_names:
+        if col not in column_mapping.keys():
+            print(f"Column '{col}' does not exist in Grist table. Creating new column")
+            org_columns_to_create.append(col)  # Remove non-existent columns
+
+    if len(org_columns_to_create) > 0:
+        columns_to_defined = [
+            {
+                'id': column_name.replace(" ", "_").lower(),  
+                'label': column_name,                        
+                'type': column_types.get(column_name, 'Text')
+            }
+            for column_name in project_columns_to_create
+        ]
+        response = handle_response(session.post(project_columns_url, json={'columns': columns_to_defined}))
+    
+        if response.status_code != 200:
+            print("Failed to create column")
+            print(response.json())
+            exit()
+
+    data_list = df.to_dict(orient='records')  # Convert dataframe to list of dictionaries
+
+    #Convert NaN values to None after converting to dictionary - AGAIN!
+    for record in data_list:
+        for key, value in record.items():
+            if isinstance(value, float) and math.isnan(value):
+                record[key] = None  # Replace NaN values with None
+            
+    grist_data = [{"fields": record} for record in data_list]  # Prepare data for Grist
+
+    # Upload new data from the CSV in batches
+    for batch in create_batched_requests_by_size(grist_data, MAX_BYTES):
+        print(f"Adding {len(batch)} records")
+        response = handle_response(session.post(project_records_url, json={"records": batch}))  # Upload data
+
+print("Organizations Data uploaded successfully!")"""
