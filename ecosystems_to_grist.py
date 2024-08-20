@@ -57,7 +57,7 @@ headers = {
 URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
 FILE_TO_SAVE_AS = "ecosystems_repository_downloads.json" # the name you want to save file as
 
-resp = requests.get(URL) # making requests to server
+resp = requests.get(URL,timeout=30) # making requests to server
 
 with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new file 
     f.write(resp.content) # writing content to file
