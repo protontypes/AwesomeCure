@@ -4,7 +4,6 @@ import pandas as pd
 import math
 from io import StringIO
 from urllib.parse import urlparse
-from collections import defaultdict
 import argparse
 
 # Instantiate the parser
@@ -33,7 +32,6 @@ column_types = {
 
 # Replace these with your values
 API_KEY = parser.parse_args().key
-print(API_KEY)
 DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY'
 CSV_FILE_PATH = './csv/ost_deployment.csv'
 MAX_BYTES = 500_000
