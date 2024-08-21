@@ -93,6 +93,7 @@ organization_icon_url = []
 organization_funding_links = []
 organization_category = []
 organization_sub_category = []
+organization_namespace_url = []
 
 for index, row in df_ecosystems.iterrows():
     if row['repository'] is not None:
@@ -144,6 +145,7 @@ for index, row in df_ecosystems.iterrows():
             organization_updated_at.append(row['owner']['updated_at'])
             organization_icon_url.append(row['owner']['icon_url'])
             organization_funding_links.append(str(row['owner']['funding_links']))
+            organization_namespace_url.append(str(row['owner']['html_url']))
             organization_category.append(row['category'])
             organization_sub_category.append(row['sub_category'])
 
@@ -184,6 +186,7 @@ df_grist_organization['total_listed_projects_in_organization'] = total_listed_pr
 df_grist_organization['organization_twitter_handle'] = organization_twitter_handle
 df_grist_organization['organization_repositories_counts'] = organization_repositories_counts
 df_grist_organization['organization_website'] = organization_website
+df_grist_organization['organization_namespace_url'] = organization_namespace_url
 df_grist_organization['organization_created_at'] = organization_created_at
 df_grist_organization['organization_updated_at'] = organization_updated_at
 df_grist_organization['organization_icon_url'] = organization_icon_url
@@ -194,12 +197,13 @@ df_grist_organization['organization_sub_category'] = organization_sub_category
 
 df_grist_organization = pd.merge(df_grist_organization, df_org_labels, on='organization_user_name', how='left')
 df_grist_organization['organization_website'] = df_grist_organization['organization_website_x'].where(df_grist_organization['organization_website_x'].notnull(), df_grist_organization['organization_website_y'])
-df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_name_y'],axis=1)
+df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_name_y','organization_namespace_url_y'],axis=1)
 df_grist_organization.rename(columns={"organization_name_x": "organization_name"},inplace=True)
+df_grist_organization.rename(columns={"organization_namespace_url_x": "organization_namespace_url"},inplace=True)
 
 df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url
 )
-print(df_grist_organization['organization_website'].head(100))
+
 def calculate_size_in_bytes(data):
     """
     Function to calculate the size of the data in bytes.
