@@ -33,7 +33,6 @@ column_types = {
 # Replace these with your values
 API_KEY = parser.parse_args().key
 DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY'
-CSV_FILE_PATH = './csv/ost_deployment.csv'
 MAX_BYTES = 500_000
 
 TABLE_NAME_PROJECTS = 'Projects'
@@ -63,6 +62,8 @@ with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new fi
     f.write(resp.content) # writing content to file
 df_ecosystems = pd.read_json(StringIO(resp.content.decode()))
 
+df_org_labels = pd.read_csv('./csv/organizations_labeled.csv',header=0)
+
 stars = []
 homepage = []
 license = []
@@ -76,6 +77,7 @@ listed_projects = []
 funding_ymls = []
 
 organization_name = []
+organization_user_name = []
 total_listed_projects_in_organization = {}
 organization_description = []
 organization_location = []
@@ -130,6 +132,7 @@ for index, row in df_ecosystems.iterrows():
             total_listed_projects_in_organization[row['owner']['name']] = 1 
         if row['owner']['name'] not in organization_name:
             organization_name.append(row['owner']['name'])
+            organization_user_name.append(row['owner']['login'])
             organization_description.append(row['owner']['description'])
             organization_location.append(row['owner']['location'])
             organization_email.append(row['owner']['email'])
@@ -172,6 +175,7 @@ df_grist_projects['project_updated_at'] = df_ecosystems['updated_at'].astype(str
 
 df_grist_organization = pd.DataFrame()
 df_grist_organization['organization_name'] = organization_name
+df_grist_organization['organization_user_name'] = organization_user_name
 df_grist_organization['organization_description'] = organization_description
 df_grist_organization['organization_location'] = organization_location
 df_grist_organization['organization_email'] = organization_email
@@ -183,9 +187,18 @@ df_grist_organization['organization_created_at'] = organization_created_at
 df_grist_organization['organization_updated_at'] = organization_updated_at
 df_grist_organization['organization_icon_url'] = organization_icon_url
 df_grist_organization['organization_funding_links'] = organization_funding_links
+df_grist_organization['organization_funding_links'] = df_grist_organization['organization_funding_links'].str.strip('[]')
 df_grist_organization['organization_category'] = organization_category
 df_grist_organization['organization_sub_category'] = organization_sub_category
 
+df_grist_organization = pd.merge(df_grist_organization, df_org_labels, on='organization_user_name', how='left')
+df_grist_organization['organization_website'] = df_grist_organization['organization_website_x'].where(df_grist_organization['organization_website_x'].notnull(), df_grist_organization['organization_website_y'])
+df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_name_y'],axis=1)
+df_grist_organization.rename(columns={"organization_name_x": "organization_name"},inplace=True)
+
+df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url
+)
+print(df_grist_organization['organization_website'].head(100))
 def calculate_size_in_bytes(data):
     """
     Function to calculate the size of the data in bytes.
