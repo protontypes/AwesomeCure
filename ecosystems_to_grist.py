@@ -63,7 +63,7 @@ with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new fi
 df_ecosystems = pd.read_json(StringIO(resp.content.decode()))
 
 CSV_org_labels = "organizations_labeled.csv"
-df_org_labels = pd.read_csv('CSV_org_labels',header=0)
+df_org_labels = pd.read_csv(CSV_org_labels,header=0)
 
 stars = []
 homepage = []
