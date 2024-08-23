@@ -91,9 +91,10 @@ organization_created_at = []
 organization_updated_at = []
 organization_icon_url = []
 organization_funding_links = []
-organization_category = []
-organization_sub_category = []
+organization_category = {}
+organization_sub_category = {}
 organization_namespace_url = []
+organization_projects = []
 
 for index, row in df_ecosystems.iterrows():
     if row['repository'] is not None:
@@ -130,8 +131,12 @@ for index, row in df_ecosystems.iterrows():
     if row['owner'] is not None and row['owner']['kind'] == 'organization':
         if row['owner']['name'] in total_listed_projects_in_organization:
             total_listed_projects_in_organization[row['owner']['name']] += 1
+            organization_category[row['owner']['name']] += ","+row['category']
+            organization_sub_category[row['owner']['name']] += ","+row['sub_category']
         else: 
-            total_listed_projects_in_organization[row['owner']['name']] = 1 
+            total_listed_projects_in_organization[row['owner']['name']] = 1
+            organization_category[row['owner']['name']] = row['category']
+            organization_sub_category[row['owner']['name']] = row['sub_category']
         if row['owner']['name'] not in organization_name:
             organization_name.append(row['owner']['name'])
             organization_user_name.append(row['owner']['login'])
@@ -146,8 +151,8 @@ for index, row in df_ecosystems.iterrows():
             organization_icon_url.append(row['owner']['icon_url'])
             organization_funding_links.append(str(row['owner']['funding_links']))
             organization_namespace_url.append(str(row['owner']['html_url']))
-            organization_category.append(row['category'])
-            organization_sub_category.append(row['sub_category'])
+            organization_projects.append(row['url'])
+print(organization_category)
 
 df_grist_projects = pd.DataFrame()
 df_grist_projects['project_names'] = df_ecosystems['name'].astype(str)
@@ -187,20 +192,21 @@ df_grist_organization['organization_twitter_handle'] = organization_twitter_hand
 df_grist_organization['organization_repositories_counts'] = organization_repositories_counts
 df_grist_organization['organization_website'] = organization_website
 df_grist_organization['organization_namespace_url'] = organization_namespace_url
+df_grist_organization['organization_projects'] = organization_projects
+df_grist_organization['organization_projects'] = df_grist_organization['organization_projects'].str.strip('[]')
 df_grist_organization['organization_created_at'] = organization_created_at
 df_grist_organization['organization_updated_at'] = organization_updated_at
 df_grist_organization['organization_icon_url'] = organization_icon_url
 df_grist_organization['organization_funding_links'] = organization_funding_links
 df_grist_organization['organization_funding_links'] = df_grist_organization['organization_funding_links'].str.strip('[]')
-df_grist_organization['organization_category'] = organization_category
-df_grist_organization['organization_sub_category'] = organization_sub_category
+df_grist_organization['organization_category'] = organization_category.values()
+df_grist_organization['organization_sub_category'] = organization_sub_category.values()
 
 df_grist_organization = pd.merge(df_grist_organization, df_org_labels, on='organization_user_name', how='left')
 df_grist_organization['organization_website'] = df_grist_organization['organization_website_x'].where(df_grist_organization['organization_website_x'].notnull(), df_grist_organization['organization_website_y'])
 df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_name_y','organization_namespace_url_y'],axis=1)
 df_grist_organization.rename(columns={"organization_name_x": "organization_name"},inplace=True)
 df_grist_organization.rename(columns={"organization_namespace_url_x": "organization_namespace_url"},inplace=True)
-
 df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url
 )
 
