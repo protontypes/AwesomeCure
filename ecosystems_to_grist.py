@@ -10,10 +10,10 @@ import argparse
 parser = argparse.ArgumentParser(description="Push metadata from ecosyste.ms to Grist")
 
 parser.add_argument(
-    '-k', '--key',           # Argument name (short and long form)
-    type=str,                 # Expected data type
+    '-k', '--key',            # Argument name (short and long form)
+    type=str,                 # Datatype of the argument 
     required=True,            # Makes this argument mandatory
-    help='Your name'          # Help text for this argument
+    help='Grist API Key'      # Help text for this argument
 )
 
 ## defines all Grist types that are not text by default.
@@ -32,7 +32,7 @@ column_types = {
 
 # Replace these with your values
 API_KEY = parser.parse_args().key
-DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY'
+DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY' # The grist document ID
 MAX_BYTES = 500_000
 
 TABLE_NAME_PROJECTS = 'Projects'
@@ -47,24 +47,27 @@ org_records_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAM
 org_delete_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_ORGANIZATIONS}/data/delete'
 org_columns_url = f'https://api.getgrist.com/api/docs/{DOC_ID}/tables/{TABLE_NAME_ORGANIZATIONS}/columns'
 
-# Headers for API request
+# Headers for API request including the API_KEY
 headers = {
     'Authorization': f'Bearer {API_KEY}',
     'Content-Type': 'application/json'
 }
 
-URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
+
+ECOSYSTEM_URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
 FILE_TO_SAVE_AS = "ecosystems_repository_downloads.json" # the name you want to save file as
 
-resp = requests.get(URL,timeout=30) # making requests to server
+resp = requests.get(ECOSYSTEM_URL,timeout=30) # making requests to server. For running in GitHub long timeouts are needed. 
 
 with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new file 
     f.write(resp.content) # writing content to file
 df_ecosystems = pd.read_json(StringIO(resp.content.decode()))
 
+# manually created labels can be added to the ecosyste.ms data
 CSV_org_labels = "organizations_labeled.csv"
 df_org_labels = pd.read_csv(CSV_org_labels,header=0)
 
+# define variables that are needed to extract nested data in the JSON
 stars = []
 homepage = []
 license = []
@@ -74,8 +77,6 @@ total_commits = []
 total_committers = []
 development_distribution_score = []
 latest_commit_activity = []
-listed_projects = []
-funding_ymls = []
 
 organization_name = []
 organization_user_name = []
@@ -204,14 +205,14 @@ df_grist_organization['organization_sub_category'] = organization_sub_category.v
 
 df_grist_organization = pd.merge(df_grist_organization, df_org_labels, on='organization_user_name', how='left')
 df_grist_organization['organization_website'] = df_grist_organization['organization_website_x'].where(df_grist_organization['organization_website_x'].notnull(), df_grist_organization['organization_website_y'])
-df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_name_y','organization_namespace_url_y'],axis=1)
+df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_namespace_url_y'],axis=1)
 df_grist_organization.rename(columns={"organization_name_x": "organization_name"},inplace=True)
 df_grist_organization.rename(columns={"organization_namespace_url_x": "organization_namespace_url"},inplace=True)
 df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url
 )
 
-header = ["organization_name","organization_namespace_url","organization_website", "location_country", "form_of_organization"]
-df_grist_organization.to_csv('organizations_labeled.csv', columns = header)
+header = ["organization_user_name","organization_namespace_url","organization_website", "location_country", "form_of_organization"]
+df_grist_organization.to_csv('organizations_labeled.csv', columns = header, index=False)
 
 def calculate_size_in_bytes(data):
     """
