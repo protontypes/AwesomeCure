@@ -77,6 +77,9 @@ total_commits = []
 total_committers = []
 development_distribution_score = []
 latest_commit_activity = []
+platform = []
+code_of_conduct = []
+contributing = []
 
 organization_name = []
 organization_user_name = []
@@ -97,12 +100,27 @@ organization_sub_category = {}
 organization_namespace_url = []
 organization_projects = {}
 
+
 for index, row in df_ecosystems.iterrows():
     if row['repository'] is not None:
         stars.append(row['repository']['stargazers_count'])
         license.append(row['repository']['license']) 
         homepage.append(row['repository']['homepage'])
+        platform.append(row['repository']['host']['name'])
         project_created_at.append(row['repository']['created_at'])
+        if 'files' in row['repository']['metadata']:
+            if row['repository']['metadata']['files']['code_of_conduct'] is not None:
+                code_of_conduct.append(True)
+            else: 
+                code_of_conduct.append(False)    
+            if row['repository']['metadata']['files']['contributing'] is not None:
+                contributing.append(True)
+            else:
+                contributing.append(False)
+        else:
+            code_of_conduct.append(False)
+            contributing.append(False)
+
         if row['repository']['commit_stats'] is not None:
             total_commits.append(row['repository']['commit_stats']['total_commits'])
             total_committers.append(row['repository']['commit_stats']['total_committers'])
@@ -122,6 +140,9 @@ for index, row in df_ecosystems.iterrows():
         total_committers.append(None)
         latest_commit_activity.append(None)
         development_distribution_score.append(None)
+        platform.append(None)
+        code_of_conduct.append(None)
+        contributing.append(None)
 
     if row['readme_doi_urls']:
         doi = urlparse(row['readme_doi_urls'][0]).path[1:]
@@ -168,7 +189,7 @@ df_grist_projects['language'] = df_ecosystems['language'].astype(str)
 df_grist_projects['license'] = license
 df_grist_projects['downloads_last_month'] = df_ecosystems['monthly_downloads'].astype(str)
 df_grist_projects['stars'] = stars
-df_grist_projects['development_distribution_score'] = development_distribution_score
+df_grist_projects['dds'] = development_distribution_score
 df_grist_projects['score'] = df_ecosystems['score'].astype(str)
 df_grist_projects['total_committers'] = total_committers
 df_grist_projects['citations'] = df_ecosystems['total_citations'].astype(str)
@@ -180,6 +201,9 @@ df_grist_projects['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
 df_grist_projects['last_synced_at'] = df_ecosystems['last_synced_at'].astype(str)
 df_grist_projects['entry_created_at'] = df_ecosystems['created_at'].astype(str)
 df_grist_projects['project_updated_at'] = df_ecosystems['updated_at'].astype(str)
+df_grist_projects['platform'] = platform
+df_grist_projects['code_of_conduct'] = code_of_conduct
+df_grist_projects['contributing_guide'] = contributing
 
 
 df_grist_organization = pd.DataFrame()
