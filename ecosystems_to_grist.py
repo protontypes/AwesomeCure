@@ -33,7 +33,7 @@ column_types = {
 # Replace these with your values
 API_KEY = parser.parse_args().key
 DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY' # The grist document ID
-MAX_BYTES = 500_000
+MAX_BYTES = 700_000
 
 TABLE_NAME_PROJECTS = 'Projects'
 project_columns_to_create = []
@@ -63,6 +63,17 @@ with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new fi
     f.write(resp.content) # writing content to file
 df_ecosystems = pd.read_json(StringIO(resp.content.decode()))
 
+
+ECOSYSTEM_URL_IMAGES = "https://ost.ecosyste.ms/api/v1/projects/images"
+FILE_TO_SAVE_AS_IMAGES = "ecosystems_images.json" # the name you want to save file as
+
+resp_images = requests.get(ECOSYSTEM_URL_IMAGES) # making requests to server
+
+with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new file 
+    f.write(resp_images.content) # writing content to file
+
+df_ecosystems_images = pd.read_json(StringIO(resp_images.content.decode()))
+
 # manually created labels can be added to the ecosyste.ms data
 CSV_org_labels = "organizations_labeled.csv"
 df_org_labels = pd.read_csv(CSV_org_labels,header=0)
@@ -80,6 +91,8 @@ latest_commit_activity = []
 platform = []
 code_of_conduct = []
 contributing = []
+ecosystems = []
+total_number_of_dependencies = []
 
 organization_name = []
 organization_user_name = []
@@ -108,6 +121,15 @@ for index, row in df_ecosystems.iterrows():
         homepage.append(row['repository']['homepage'])
         platform.append(row['repository']['host']['name'])
         project_created_at.append(row['repository']['created_at'])
+        dependencies_counter = 0
+        ecosystems_string = ""
+        if row['dependencies']:
+            for package_manager in row['dependencies']:
+                ecosystems_string += package_manager['ecosystem']+", "
+                dependencies_counter += len(package_manager['dependencies'])
+        total_number_of_dependencies.append(dependencies_counter)
+        ecosystems.append(ecosystems_string)
+
         if 'files' in row['repository']['metadata']:
             if row['repository']['metadata']['files']['code_of_conduct'] is not None:
                 code_of_conduct.append(True)
@@ -143,6 +165,8 @@ for index, row in df_ecosystems.iterrows():
         platform.append(None)
         code_of_conduct.append(None)
         contributing.append(None)
+        total_number_of_dependencies.append(None)
+        ecosystems.append(None)
 
     if row['readme_doi_urls']:
         doi = urlparse(row['readme_doi_urls'][0]).path[1:]
@@ -191,10 +215,12 @@ df_grist_projects['downloads_last_month'] = df_ecosystems['monthly_downloads'].a
 df_grist_projects['stars'] = stars
 df_grist_projects['dds'] = development_distribution_score
 df_grist_projects['score'] = df_ecosystems['score'].astype(str)
-df_grist_projects['total_committers'] = total_committers
+df_grist_projects['contributors'] = total_committers
 df_grist_projects['citations'] = df_ecosystems['total_citations'].astype(str)
 df_grist_projects['project_created_at'] = project_created_at
 df_grist_projects['total_commits'] = total_commits
+df_grist_projects['total_number_of_dependencies'] = total_number_of_dependencies
+df_grist_projects['ecosystems'] = ecosystems
 df_grist_projects['readme_doi_urls'] = df_ecosystems['readme_doi_urls'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
 df_grist_projects['funding_links'] = df_ecosystems['funding_links'].astype(str).apply(lambda x: x.replace('[','').replace(']','').replace('\'',''))
 df_grist_projects['avatar_url'] = df_ecosystems['avatar_url'].astype(str)
@@ -205,6 +231,10 @@ df_grist_projects['platform'] = platform
 df_grist_projects['code_of_conduct'] = code_of_conduct
 df_grist_projects['contributing_guide'] = contributing
 
+df_ecosystems_images.drop(df_ecosystems_images.columns.difference(['url','readme_image_urls']), 1, inplace=True)
+df_ecosystems_images.rename(columns={"url": "git_url"},inplace=True)
+df_grist_projects = pd.merge(df_grist_projects, df_ecosystems_images, on='git_url', how='left')
+df_grist_projects['readme_image_urls'] = df_grist_projects['readme_image_urls'].astype(str)
 
 df_grist_organization = pd.DataFrame()
 df_grist_organization['organization_name'] = organization_name
@@ -232,8 +262,9 @@ df_grist_organization['organization_website'] = df_grist_organization['organizat
 df_grist_organization = df_grist_organization.drop(['organization_website_x','organization_website_y','organization_namespace_url_y'],axis=1)
 df_grist_organization.rename(columns={"organization_name_x": "organization_name"},inplace=True)
 df_grist_organization.rename(columns={"organization_namespace_url_x": "organization_namespace_url"},inplace=True)
-df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url
-)
+df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url)
+
+
 
 header = ["organization_user_name","organization_namespace_url","organization_website", "location_country", "form_of_organization"]
 df_grist_organization.to_csv('organizations_labeled.csv', columns = header, index=False)
