@@ -235,6 +235,7 @@ df_ecosystems_images.drop(df_ecosystems_images.columns.difference(['url','readme
 df_ecosystems_images.rename(columns={"url": "git_url"},inplace=True)
 df_grist_projects = pd.merge(df_grist_projects, df_ecosystems_images, on='git_url', how='left')
 df_grist_projects['readme_image_urls'] = df_grist_projects['readme_image_urls'].astype(str)
+df_grist_projects['readme_image_urls'] = df_grist_projects['readme_image_urls'].str.slice(0, 300)
 
 df_grist_organization = pd.DataFrame()
 df_grist_organization['organization_name'] = organization_name
@@ -264,8 +265,7 @@ df_grist_organization.rename(columns={"organization_name_x": "organization_name"
 df_grist_organization.rename(columns={"organization_namespace_url_x": "organization_namespace_url"},inplace=True)
 df_grist_organization['organization_website'] = df_grist_organization['organization_website'].apply(lambda url: urlparse(f"http://{url}" if pd.notna(url) and '//' not in url else url).geturl() if pd.notna(url) and url != '' else url)
 
-
-
+# Rewrite the csv file with the new organizations
 header = ["organization_user_name","organization_namespace_url","organization_website", "location_country", "form_of_organization"]
 df_grist_organization.to_csv('organizations_labeled.csv', columns = header, index=False)
 
@@ -390,6 +390,7 @@ with requests.Session() as session:  # Using requests.Session for multiple reque
 
     # Upload new data from the CSV in batches
     for batch in create_batched_requests_by_size(grist_data, MAX_BYTES):
+        #print(batch)
         print(f"Adding {len(batch)} records")
         response = handle_response(session.post(project_records_url, json={"records": batch}))  # Upload data
 
