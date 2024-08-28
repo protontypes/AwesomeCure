@@ -17,6 +17,7 @@ parser.add_argument(
 )
 
 ## defines all Grist types that are not text by default.
+## does not work so far. Types need to set in the Grist frontend. 
 column_types = {
     'download_counts': 'Numeric',
     'citations': 'Integer',
@@ -32,7 +33,7 @@ column_types = {
 
 # Replace these with your values
 API_KEY = parser.parse_args().key
-DOC_ID = '8YWKLVW6EKD7sLxWP2H9ZY' # The grist document ID
+DOC_ID = 'gSscJkc5Rb1Rw45gh1o1Yc' # The grist document ID
 MAX_BYTES = 700_000
 
 TABLE_NAME_PROJECTS = 'Projects'
@@ -53,7 +54,6 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-
 ECOSYSTEM_URL = "https://ost.ecosyste.ms/api/v1/projects?reviewed=true&per_page=3000"
 FILE_TO_SAVE_AS = "ecosystems_repository_downloads.json" # the name you want to save file as
 
@@ -64,6 +64,7 @@ with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new fi
 df_ecosystems = pd.read_json(StringIO(resp.content.decode()))
 
 
+
 ECOSYSTEM_URL_IMAGES = "https://ost.ecosyste.ms/api/v1/projects/images"
 FILE_TO_SAVE_AS_IMAGES = "ecosystems_images.json" # the name you want to save file as
 
@@ -71,8 +72,8 @@ resp_images = requests.get(ECOSYSTEM_URL_IMAGES) # making requests to server
 
 with open(FILE_TO_SAVE_AS, "wb") as f: # opening a file handler to create new file 
     f.write(resp_images.content) # writing content to file
-
 df_ecosystems_images = pd.read_json(StringIO(resp_images.content.decode()))
+
 
 # manually created labels can be added to the ecosyste.ms data
 CSV_org_labels = "organizations_labeled.csv"
@@ -231,11 +232,12 @@ df_grist_projects['platform'] = platform
 df_grist_projects['code_of_conduct'] = code_of_conduct
 df_grist_projects['contributing_guide'] = contributing
 
-df_ecosystems_images.drop(df_ecosystems_images.columns.difference(['url','readme_image_urls']), 1, inplace=True)
+df_ecosystems_images = df_ecosystems_images.drop(df_ecosystems_images.columns.difference(['url','readme_image_urls']), 1)
 df_ecosystems_images.rename(columns={"url": "git_url"},inplace=True)
 df_grist_projects = pd.merge(df_grist_projects, df_ecosystems_images, on='git_url', how='left')
 df_grist_projects['readme_image_urls'] = df_grist_projects['readme_image_urls'].astype(str)
 df_grist_projects['readme_image_urls'] = df_grist_projects['readme_image_urls'].str.slice(0, 300)
+df_grist_projects['readme_image_urls'] = df_grist_projects['readme_image_urls'].str.strip('[]')
 
 df_grist_organization = pd.DataFrame()
 df_grist_organization['organization_name'] = organization_name
