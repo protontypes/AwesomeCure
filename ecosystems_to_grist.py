@@ -17,7 +17,7 @@ parser.add_argument(
 )
 
 ## defines all Grist types that are not text by default.
-## does not work so far. Types need to set in the Grist frontend. 
+## does not work so far. Types need to set in the Grist frontend.
 column_types = {
     'download_counts': 'Numeric',
     'citations': 'Integer',
@@ -28,7 +28,9 @@ column_types = {
     'keywords': 'Choice List',
     'score': 'Numeric',
     'created_at': 'DateTime',
-    'license': 'Choice'
+    'license': 'Choice',
+    'total_dependent_repos': 'Numeric',
+    'total_dependent_packages': 'Numeric'
 }
 
 # Replace these with your values
@@ -231,6 +233,8 @@ df_grist_projects['project_updated_at'] = df_ecosystems['updated_at'].astype(str
 df_grist_projects['platform'] = platform
 df_grist_projects['code_of_conduct'] = code_of_conduct
 df_grist_projects['contributing_guide'] = contributing
+df_grist_projects['total_dependent_repos'] = df_ecosystems['total_dependent_repos'].astype(str)
+df_grist_projects['total_dependent_packages'] = df_ecosystems['total_dependent_packages'].astype(str)
 
 df_ecosystems_images = df_ecosystems_images.drop(df_ecosystems_images.columns.difference(['url','readme_image_urls']), 1)
 df_ecosystems_images.rename(columns={"url": "git_url"},inplace=True)
